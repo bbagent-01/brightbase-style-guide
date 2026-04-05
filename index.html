@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brightbase.co — Design System Workbench</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fragment+Mono:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=Sora:wght@300;400;500;600;700&family=Figtree:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&family=Rubik:wght@300;400;500;600;700&family=Karla:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700&family=Albert+Sans:wght@300;400;500;600;700&family=Red+Hat+Display:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Onest:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&family=Source+Code+Pro:wght@400;500&family=IBM+Plex+Mono:wght@400;500&family=Space+Mono:wght@400;700&family=Roboto+Mono:wght@400;500&family=DM+Mono:wght@400;500&family=Inconsolata:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chroma-js@2.4.2/chroma.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.33.0/dist/tabler-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/fill/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-primary: #F2EFE9; --bg-surface: #F7F5F1; --bg-card: #FFFDF6;
+      --text-primary: #1F1915; --text-secondary: #616161;
+      --border: #E6E3DD; --border-faint: #EDEBE7;
+      --footer-bg: #000000; --footer-text: #FFFDF6;
+      --font-heading: 'DM Sans', sans-serif; --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'Fragment Mono', 'JetBrains Mono', monospace;
+      --heading-weight: 400; --heading-tracking: -0.01em;
+      --max-width: 1800px; --container-padding: 32px;
+      --section-padding: 80px; --section-padding-lg: 120px;
+      --radius-card: 8px; --radius-button: 2075px;
+      --card-shadow: 0 1px 3px rgba(0,0,0,.06); --card-border: 1px solid var(--border);
+      --card-padding: 24px;
+      --gap-component: 48px; --gap-element: 16px;
+      --size-hero: 120; --size-section: 48; --size-feature: 32;
+      --size-body: 16; --size-label: 10; --size-button: 16;
+      --font-scale: 1; --spacing-scale: 1;
+      --icon-size: 24px; --icon-color: var(--text-primary);
+    }
+    body { font-family: 'DM Sans', sans-serif; color: #1A1D21; background: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    #app { display: flex; min-height: 100vh; }
+    #main { flex: 1; min-width: 0; overflow-y: auto; height: 100vh; }
+    #sidebar { width: 0; overflow: hidden; border-left: 1px solid #E5E7EB; background: #FAFAFA; transition: width .3s ease; flex-shrink: 0; height: 100vh; position: sticky; top: 0; }
+    #sidebar.open { width: 380px; }
+    .sidebar-inner { width: 380px; height: 100%; overflow-y: auto; padding: 16px; }
+
+    .guide-header { border-bottom: 1px solid #E5E7EB; padding: 10px 32px; position: sticky; top: 0; background: #fff; z-index: 200; }
+    .header-top { display: flex; align-items: center; justify-content: space-between; }
+    .guide-header h1 { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; }
+    .guide-header .sub { font-size: 11px; color: #999; margin-left: 10px; }
+    .header-right { display: flex; gap: 14px; align-items: center; }
+    .guide-nav a { font-size: 10px; color: #999; text-decoration: none; font-weight: 500; }
+    .guide-nav a:hover { color: #1A1D21; }
+    .toggle-btn { background: #1A1D21; color: #fff; border: none; border-radius: 5px; padding: 5px 12px; font-size: 10px; font-weight: 500; cursor: pointer; font-family: 'JetBrains Mono', monospace; }
+    .toggle-btn:hover { background: #333; }
+    .tab-bar { display: flex; gap: 0; margin-top: 8px; }
+    .tab-btn { padding: 6px 16px; font-size: 11px; font-weight: 500; border: none; background: none; cursor: pointer; color: #999; border-bottom: 2px solid transparent; }
+    .tab-btn.active { color: #1A1D21; border-bottom-color: #1A1D21; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .guide-section { padding: 36px 32px; border-bottom: 1px solid #E5E7EB; max-width: 1200px; margin: 0 auto; }
+    .guide-section.full-width { max-width: none; }
+    .guide-section:last-child { border-bottom: none; }
+    .sn { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #999; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 3px; }
+    .st { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 3px; }
+    .sd { font-size: 12px; color: #777; margin-bottom: 24px; max-width: 560px; line-height: 1.6; }
+    .subsection { margin-top: 28px; }
+    .subsection h3 { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+
+    /* Sidebar controls */
+    .cp-group { margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+    .cp-group-title { font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: #999; margin-bottom: 6px; }
+    .cp-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+    .cp-label { font-size: 9px; font-family: 'JetBrains Mono', monospace; color: #555; min-width: 80px; }
+    .cp-row input[type="color"] { width: 22px; height: 22px; border: 1px solid #ddd; border-radius: 3px; cursor: pointer; padding: 1px; background: #fff; }
+    .cp-row input[type="range"] { flex: 1; min-width: 0; height: 3px; accent-color: #1A1D21; cursor: pointer; }
+    .cp-val { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #999; min-width: 36px; text-align: right; }
+    .cp-actions { display: flex; gap: 5px; margin-top: 6px; flex-wrap: wrap; }
+    .cp-btn { flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px; background: #fff; font-size: 9px; font-weight: 500; cursor: pointer; text-align: center; min-width: 56px; }
+    .cp-btn:hover { background: #f0f0f0; }
+    .cp-btn.primary { background: #1A1D21; color: #fff; border-color: #1A1D21; }
+    .cp-select { width: 100%; padding: 4px 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 10px; background: #fff; cursor: pointer; }
+    .cp-divider { border: none; border-top: 1px solid #eee; margin: 4px 0; }
+
+    /* Foundation palette — large swatches */
+    .foundation-editor { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-bottom: 12px; }
+    .foundation-item { text-align: center; position: relative; }
+    .foundation-swatch-wrap { position: relative; }
+    .foundation-swatch-wrap input[type="color"] { width: 100%; height: 80px; border: 1px solid #E5E7EB; border-radius: 8px; cursor: pointer; padding: 2px; background: #fff; display: block; }
+    .foundation-name { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #555; margin-top: 4px; text-transform: capitalize; }
+    .foundation-hex { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #bbb; }
+    .foundation-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,.5); color: #fff; border: none; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; cursor: pointer; line-height: 16px; text-align: center; }
+    .color-editor-add { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #999; background: #fff; border: 1px dashed #ddd; border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+    .harmony-row { display: flex; gap: 6px; align-items: center; margin-bottom: 12px; }
+
+    /* Scale display */
+    .scale-display { margin-bottom: 8px; }
+    .scale-display-label { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #999; margin-bottom: 2px; text-transform: uppercase; letter-spacing: .04em; }
+    .scale-display-strip { display: flex; height: 28px; border-radius: 4px; overflow: hidden; border: 1px solid #E5E7EB; }
+    .scale-display-stop { flex: 1; cursor: pointer; position: relative; }
+    .scale-display-stop:hover::after { content: attr(title); position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%); font-family: 'JetBrains Mono', monospace; font-size: 7px; color: #999; white-space: nowrap; z-index: 10; background: #fff; padding: 1px 3px; border-radius: 2px; border: 1px solid #eee; }
+
+    /* Semantic assignments — popup picker */
+    .semantic-grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; }
+    .semantic-row { position: relative; display: flex; align-items: center; gap: 10px; padding: 6px 0; }
+    .semantic-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #555; min-width: 80px; }
+    .semantic-trigger { width: 60px; height: 40px; border-radius: 6px; border: 1px solid #E5E7EB; cursor: pointer; position: relative; transition: box-shadow .15s; }
+    .semantic-trigger:hover { box-shadow: 0 0 0 2px rgba(26,29,33,.15); }
+    .semantic-trigger-arrow { position: absolute; right: 4px; bottom: 3px; font-size: 8px; color: rgba(0,0,0,.35); pointer-events: none; }
+    .semantic-trigger-meta { font-family: 'JetBrains Mono', monospace; font-size: 7px; color: #aaa; margin-top: 2px; }
+    .semantic-popup { display: none; position: absolute; top: 100%; left: 0; z-index: 100; background: #fff; border: 1px solid #E5E7EB; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 10px; min-width: 240px; margin-top: 4px; }
+    .semantic-popup.open { display: block; }
+    .semantic-popup-group-title { font-family: 'JetBrains Mono', monospace; font-size: 7px; text-transform: uppercase; letter-spacing: .06em; color: #999; margin: 6px 0 3px; }
+    .semantic-popup-group-title:first-child { margin-top: 0; }
+    .semantic-popup-swatches { display: flex; gap: 3px; flex-wrap: wrap; margin-bottom: 4px; }
+    .semantic-popup-swatch { width: 22px; height: 22px; border-radius: 4px; border: 1.5px solid transparent; cursor: pointer; transition: all .1s; }
+    .semantic-popup-swatch:hover { transform: scale(1.25); z-index: 2; border-color: #999; }
+    .semantic-popup-swatch.active { border: 2px solid #1A1D21; transform: scale(1.15); }
+
+    /* Gradients */
+    .grad-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+    .grad-card { border: 1px solid #E5E7EB; border-radius: 6px; overflow: hidden; cursor: pointer; }
+    .grad-card.selected { outline: 2px solid #1A1D21; outline-offset: 1px; }
+    .grad-swatch { height: 64px; }
+    .grad-info { padding: 6px 8px; display: flex; justify-content: space-between; align-items: center; }
+    .grad-css { font-family: 'JetBrains Mono', monospace; font-size: 7px; color: #777; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 4px; }
+    .grad-editor { background: #FAFAFA; border: 1px solid #E5E7EB; border-radius: 6px; padding: 14px; margin-bottom: 12px; }
+    .grad-controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+    .grad-control-label { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #999; text-transform: uppercase; }
+
+    /* Font picker */
+    .font-picker-wrap { position: relative; flex: 1; }
+    .font-picker-btn { width: 100%; padding: 5px 8px; border: 1px solid #ddd; border-radius: 4px; background: #fff; font-size: 11px; cursor: pointer; text-align: left; display: flex; align-items: center; justify-content: space-between; }
+    .font-picker-dropdown { position: absolute; top: 100%; left: -80px; width: 340px; background: #fff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 8px 32px rgba(0,0,0,.15); z-index: 500; max-height: 420px; overflow-y: auto; display: none; margin-top: 4px; }
+    .font-picker-dropdown.open { display: block; }
+    .font-picker-search { width: 100%; padding: 10px 14px; border: none; border-bottom: 1px solid #eee; font-size: 12px; outline: none; position: sticky; top: 0; background: #fff; z-index: 1; }
+    .font-picker-option { padding: 10px 14px; cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
+    .font-picker-option:hover { background: #f5f5f5; }
+    .font-picker-option.active { background: #eee; }
+    .font-picker-preview { font-size: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .font-picker-name { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #999; }
+
+    .icon-preview-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 6px 0; }
+    .icon-preview-item { display: flex; align-items: center; justify-content: center; height: 32px; border: 1px solid #eee; border-radius: 4px; }
+
+    /* Color swatches */
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+    .color-card { border: 1px solid #E5E7EB; border-radius: 6px; overflow: hidden; }
+    .color-swatch { height: 48px; }
+    .color-info { padding: 6px 8px; }
+    .color-name { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500; }
+    .color-value { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #999; }
+
+    /* Type specimens */
+    .type-specimen { border: 1px solid #E5E7EB; border-radius: 6px; margin-bottom: 10px; overflow: hidden; }
+    .type-preview { padding: 20px 24px; background: var(--bg-primary); }
+    .type-meta { padding: 6px 12px; display: flex; flex-wrap: wrap; gap: 10px; border-top: 1px solid #E5E7EB; background: #FAFAFA; font-size: 9px; }
+    .type-meta-item label { font-size: 7px; text-transform: uppercase; letter-spacing: .05em; color: #999; display: block; }
+    .type-meta-item span { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500; }
+
+    /* Layout DNA */
+    .layout-demo { border: 1px solid #E5E7EB; border-radius: 6px; overflow: hidden; margin-bottom: 16px; }
+    .layout-demo-label { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #999; text-transform: uppercase; letter-spacing: .06em; padding: 8px 12px; border-bottom: 1px solid #E5E7EB; background: #FAFAFA; }
+    .dna-fullwidth { background: var(--bg-primary); }
+    .dna-section { padding: 28px; max-width: var(--max-width); margin: 0 auto; text-align: center; }
+    .dna-divider { border: none; border-top: 1px solid var(--border-faint); margin: 0; }
+    .dna-annotation { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #E25F59; background: rgba(226,95,89,.08); padding: 2px 5px; border-radius: 2px; display: inline-block; }
+
+    /* Components */
+    .comp-block { margin-bottom: 20px; }
+    .comp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+    .comp-label { font-family: 'JetBrains Mono', monospace; font-size: 8px; text-transform: uppercase; letter-spacing: .06em; color: #999; }
+    .copy-btn { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #999; background: #f5f5f5; border: 1px solid #E5E7EB; border-radius: 3px; padding: 2px 6px; cursor: pointer; }
+    .copy-btn:hover { background: #1A1D21; color: #fff; border-color: #1A1D21; }
+    .comp-preview { border: 1px solid #E5E7EB; border-radius: 6px; overflow: hidden; }
+    .comp-preview-inner { background: var(--bg-primary); }
+
+    /* B150 Components */
+    .b-nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; background: var(--bg-card); }
+    .b-logo { font-family: var(--font-mono); font-size: 12px; letter-spacing: .03em; text-transform: uppercase; color: var(--text-primary); }
+    .b-nav-links { display: flex; gap: 18px; align-items: center; }
+    .b-nav-link { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); letter-spacing: .03em; text-transform: uppercase; color: var(--text-primary); text-decoration: none; }
+    .b-btn { font-family: var(--font-body); font-size: calc(var(--size-button) * var(--font-scale) * 0.875 * 1px); font-weight: var(--heading-weight); letter-spacing: var(--heading-tracking); text-transform: uppercase; color: var(--text-primary); background: var(--bg-card); border: var(--card-border); border-radius: var(--radius-button); padding: 8px 16px; cursor: pointer; text-decoration: none; display: inline-block; }
+    .b-btn:hover { filter: brightness(.97); }
+    .b-btn-dark { background: rgba(255,255,255,.1); color: var(--footer-text); border-color: rgba(255,255,255,.2); }
+    .b-pill { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); letter-spacing: .03em; text-transform: uppercase; color: var(--text-primary); border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; background: var(--bg-card); }
+    .b-section-wrap { background: var(--bg-primary); }
+    .b-section-content { max-width: var(--max-width); margin: 0 auto; padding: calc(var(--section-padding) * var(--spacing-scale)) calc(var(--container-padding) * var(--spacing-scale)); }
+    .b-divider { border: none; border-top: 1px solid var(--border-faint); margin: 0; }
+    .b-heading { font-family: var(--font-heading); font-weight: var(--heading-weight); letter-spacing: var(--heading-tracking); color: var(--text-primary); line-height: 1.15; }
+    .b-feature { display: grid; grid-template-columns: 55% 1fr; gap: calc(var(--gap-component) * var(--spacing-scale)); align-items: center; }
+    .b-feature-img { background: var(--bg-surface); border-radius: var(--radius-card); height: 260px; border: var(--card-border); display: flex; align-items: center; justify-content: center; overflow: hidden; color: var(--text-secondary); font-size: 11px; }
+    .b-feature-img img { width: 100%; height: 100%; object-fit: cover; }
+    .b-feature-label { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); letter-spacing: .03em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 5px; }
+    .b-feature-heading { font-family: var(--font-heading); font-size: calc(var(--size-feature) * var(--font-scale) * 1px); font-weight: var(--heading-weight); letter-spacing: var(--heading-tracking); color: var(--text-primary); margin-bottom: 8px; line-height: 1.2; }
+    .b-feature-body { font-family: var(--font-body); font-size: calc(var(--size-body) * var(--font-scale) * 1px); color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px; }
+    .b-feature-bullets { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+    .b-feature-bullets li { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); letter-spacing: .03em; text-transform: uppercase; color: var(--text-primary); }
+    .b-feature-bullets li::before { content: '+  '; color: var(--text-secondary); }
+    .b-quote-block { background: var(--bg-surface); border-radius: var(--radius-card); padding: var(--card-padding); display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+    .b-quote-mark { font-size: 36px; color: var(--text-secondary); opacity: .25; line-height: 1; margin-bottom: 8px; }
+    .b-quote-text { font-family: var(--font-heading); font-size: calc(var(--size-body) * var(--font-scale) * 1.3 * 1px); font-weight: var(--heading-weight); letter-spacing: var(--heading-tracking); line-height: 1.5; color: var(--text-primary); }
+    .b-quote-author { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); letter-spacing: .03em; text-transform: uppercase; color: var(--text-primary); margin-top: 14px; }
+    .b-quote-role { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); text-transform: uppercase; color: var(--text-secondary); }
+    .b-quote-img { width: 100%; height: 200px; background: #333; border-radius: var(--radius-card); overflow: hidden; }
+    .b-quote-img img { width: 100%; height: 100%; object-fit: cover; }
+    .b-hero { background: linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.7)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1400&h=600&fit=crop') center/cover; padding: 56px 32px; color: #fff; min-height: 300px; border-radius: var(--radius-card); overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+    .b-hero h2 { font-family: var(--font-heading); font-size: calc(var(--size-section) * var(--font-scale) * 1.1 * 1px); font-weight: var(--heading-weight); letter-spacing: var(--heading-tracking); line-height: 1.05; max-width: 480px; margin-bottom: 10px; }
+    .b-hero p { font-family: var(--font-body); font-size: calc(var(--size-body) * var(--font-scale) * 0.875 * 1px); color: rgba(255,255,255,.65); max-width: 360px; line-height: 1.5; margin-bottom: 14px; }
+    .b-footer { background: var(--footer-bg); color: var(--footer-text); padding: 32px; border-radius: var(--radius-card); }
+    .b-footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+    .b-footer-brand { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; margin-bottom: 6px; }
+    .b-footer-desc { font-family: var(--font-body); font-size: 11px; color: rgba(255,253,246,.5); margin-bottom: 10px; }
+    .b-footer-col-title { font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: rgba(255,253,246,.35); margin-bottom: 6px; }
+    .b-footer-link { font-family: var(--font-body); font-size: 12px; color: var(--footer-text); text-decoration: none; display: block; margin-bottom: 4px; }
+    .b-footer-mark { font-family: var(--font-heading); font-size: 64px; font-weight: 700; text-align: center; opacity: .1; padding-top: 12px; }
+    .b-logo-bar { text-align: center; padding: 32px; }
+    .b-logo-bar-label { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); text-transform: uppercase; color: var(--text-secondary); margin-bottom: 14px; }
+    .b-logo-bar-logos { display: flex; gap: 32px; align-items: center; justify-content: center; flex-wrap: wrap; }
+    .b-logo-placeholder { font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--text-primary); opacity: .4; }
+    .b-cta-hero { background: linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.8)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&h=600&fit=crop') center/cover; padding: 64px 32px; text-align: center; color: #fff; border-radius: var(--radius-card); }
+    .b-cta-hero .b-pill { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.2); color: #fff; margin-bottom: 12px; }
+    .b-cta-hero h2 { font-family: var(--font-heading); font-size: calc(var(--size-section) * var(--font-scale) * 1.2 * 1px); font-weight: var(--heading-weight); letter-spacing: var(--heading-tracking); line-height: 1.1; margin-bottom: 16px; }
+    .b-carousel-card { width: 200px; flex-shrink: 0; }
+    .b-carousel-img { width: 100%; height: 140px; background: var(--bg-surface); border-radius: var(--radius-card); border: var(--card-border); margin-bottom: 5px; overflow: hidden; }
+    .b-carousel-img img { width: 100%; height: 100%; object-fit: cover; }
+    .b-carousel-label { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); text-transform: uppercase; color: var(--text-primary); }
+    .b-carousel-desc { font-family: var(--font-body); font-size: 10px; color: var(--text-secondary); }
+    .b-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: calc(var(--gap-element) * var(--spacing-scale) * 1.5); }
+    .b-grid-item-icon { font-size: 20px; margin-bottom: 6px; color: var(--icon-color); }
+    .b-grid-item-icon .ti, .b-grid-item-icon i { font-size: var(--icon-size); }
+    .b-grid-item-title { font-family: var(--font-heading); font-size: calc(var(--size-body) * var(--font-scale) * 1.1 * 1px); font-weight: 500; color: var(--text-primary); margin-bottom: 3px; }
+    .b-grid-item-body { font-family: var(--font-body); font-size: calc(var(--size-body) * var(--font-scale) * 0.875 * 1px); color: var(--text-secondary); line-height: 1.5; }
+    .b-stats { display: flex; gap: 36px; }
+    .b-stat-num { font-family: var(--font-heading); font-size: calc(var(--size-section) * var(--font-scale) * 1px); font-weight: var(--heading-weight); color: var(--text-primary); line-height: 1; }
+    .b-stat-label { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); text-transform: uppercase; color: var(--text-secondary); margin-top: 3px; }
+    .b-testimonial { background: var(--bg-surface); border-radius: var(--radius-card); padding: 18px; display: flex; gap: 12px; }
+    .b-testimonial-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+    .b-testimonial-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .b-testimonial-quote { font-family: var(--font-body); font-size: calc(var(--size-body) * var(--font-scale) * 0.875 * 1px); color: var(--text-primary); line-height: 1.5; font-style: italic; margin-bottom: 4px; }
+    .b-testimonial-name { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); text-transform: uppercase; color: var(--text-secondary); }
+    .b-faq { border: 1px solid var(--border); border-radius: var(--radius-card); overflow: hidden; }
+    .b-faq-item { border-bottom: 1px solid var(--border-faint); }
+    .b-faq-item:last-child { border-bottom: none; }
+    .b-faq-q { padding: 12px 16px; font-family: var(--font-heading); font-size: calc(var(--size-body) * var(--font-scale) * 1px); font-weight: 500; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; background: var(--bg-card); }
+    .b-faq-q::after { content: '+'; font-size: 16px; color: var(--text-secondary); }
+    .b-faq-a { padding: 0 16px 12px; font-family: var(--font-body); font-size: calc(var(--size-body) * var(--font-scale) * 0.875 * 1px); color: var(--text-secondary); line-height: 1.6; display: none; }
+    .b-faq-item.open .b-faq-q::after { content: '\2212'; }
+    .b-faq-item.open .b-faq-a { display: block; }
+    .b-pricing { background: var(--bg-card); border: var(--card-border); border-radius: var(--radius-card); padding: var(--card-padding); text-align: center; box-shadow: var(--card-shadow); }
+    .b-pricing-tier { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px; }
+    .b-pricing-price { font-family: var(--font-heading); font-size: calc(var(--size-section) * var(--font-scale) * 1px); font-weight: var(--heading-weight); color: var(--text-primary); }
+    .b-pricing-period { font-family: var(--font-body); font-size: 10px; color: var(--text-secondary); margin-bottom: 12px; }
+    .b-pricing-features { list-style: none; margin-bottom: 14px; text-align: left; }
+    .b-pricing-features li { font-family: var(--font-body); font-size: calc(var(--size-body) * var(--font-scale) * 0.875 * 1px); color: var(--text-primary); padding: 4px 0; border-bottom: 1px solid var(--border-faint); }
+    .b-pricing-features li::before { content: '\2713  '; color: var(--text-secondary); }
+    .b-article { border: var(--card-border); border-radius: var(--radius-card); overflow: hidden; background: var(--bg-card); box-shadow: var(--card-shadow); }
+    .b-article-img { height: 120px; background: var(--bg-surface); overflow: hidden; }
+    .b-article-img img { width: 100%; height: 100%; object-fit: cover; }
+    .b-article-body { padding: 12px; }
+    .b-article-cat { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); text-transform: uppercase; color: var(--text-secondary); margin-bottom: 3px; }
+    .b-article-title { font-family: var(--font-heading); font-size: calc(var(--size-body) * var(--font-scale) * 1.1 * 1px); font-weight: 500; color: var(--text-primary); margin-bottom: 3px; line-height: 1.3; }
+    .b-article-excerpt { font-family: var(--font-body); font-size: calc(var(--size-body) * var(--font-scale) * 0.8 * 1px); color: var(--text-secondary); line-height: 1.4; }
+    .b-article-date { font-family: var(--font-mono); font-size: 7px; color: #bbb; text-transform: uppercase; margin-top: 4px; }
+
+    /* New components: card, toggle, badge, input, avatar, tabs */
+    .b-card { background: var(--bg-card); border: var(--card-border); border-radius: var(--radius-card); padding: var(--card-padding); box-shadow: var(--card-shadow); }
+    .b-card-title { font-family: var(--font-heading); font-size: calc(var(--size-body) * var(--font-scale) * 1.15 * 1px); font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+    .b-card-body { font-family: var(--font-body); font-size: calc(var(--size-body) * var(--font-scale) * 0.875 * 1px); color: var(--text-secondary); line-height: 1.5; }
+    .b-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .b-toggle-track { width: 36px; height: 20px; border-radius: 10px; background: var(--border); position: relative; transition: background .2s; }
+    .b-toggle-track.on { background: var(--text-primary); }
+    .b-toggle-thumb { width: 16px; height: 16px; border-radius: 50%; background: #fff; position: absolute; top: 2px; left: 2px; transition: left .2s; }
+    .b-toggle-track.on .b-toggle-thumb { left: 18px; }
+    .b-toggle-label { font-family: var(--font-body); font-size: calc(var(--size-body) * var(--font-scale) * 0.875 * 1px); color: var(--text-primary); }
+    .b-badge { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); text-transform: uppercase; letter-spacing: .03em; padding: 3px 8px; border-radius: 4px; display: inline-block; }
+    .b-badge-default { background: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--border); }
+    .b-badge-accent { background: var(--text-primary); color: var(--bg-card); }
+    .b-input { font-family: var(--font-body); font-size: calc(var(--size-body) * var(--font-scale) * 1px); padding: 8px 12px; border: var(--card-border); border-radius: var(--radius-card); background: var(--bg-card); color: var(--text-primary); outline: none; width: 100%; }
+    .b-input::placeholder { color: var(--text-secondary); }
+    .b-input-label { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); text-transform: uppercase; letter-spacing: .03em; color: var(--text-secondary); margin-bottom: 4px; display: block; }
+    .b-avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border); }
+    .b-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .b-avatar-group { display: flex; }
+    .b-avatar-group .b-avatar { margin-left: -10px; border: 2px solid var(--bg-card); }
+    .b-avatar-group .b-avatar:first-child { margin-left: 0; }
+    .b-tabs { display: flex; border-bottom: 1px solid var(--border); }
+    .b-tab { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); text-transform: uppercase; letter-spacing: .03em; padding: 8px 16px; color: var(--text-secondary); border-bottom: 2px solid transparent; cursor: pointer; background: none; border-top: none; border-left: none; border-right: none; }
+    .b-tab.active { color: var(--text-primary); border-bottom-color: var(--text-primary); }
+
+    /* Testimonial grid */
+    .b-testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(var(--gap-element) * var(--spacing-scale)); }
+    .b-testimonial-card { background: var(--bg-card); border: var(--card-border); border-radius: var(--radius-card); padding: var(--card-padding); box-shadow: var(--card-shadow); display: flex; flex-direction: column; gap: 12px; }
+    .b-testimonial-card-quote { font-family: var(--font-body); font-size: calc(var(--size-body) * var(--font-scale) * 0.875 * 1px); color: var(--text-primary); line-height: 1.6; font-style: italic; flex: 1; }
+    .b-testimonial-card-author { display: flex; align-items: center; gap: 10px; }
+    .b-testimonial-card-avatar { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+    .b-testimonial-card-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .b-testimonial-card-name { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); text-transform: uppercase; color: var(--text-secondary); }
+
+    /* Newsletter strip */
+    .b-newsletter { background: var(--bg-surface); border-radius: var(--radius-card); padding: 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .b-newsletter-text { flex: 1; }
+    .b-newsletter-title { font-family: var(--font-heading); font-size: calc(var(--size-feature) * var(--font-scale) * 1px); font-weight: var(--heading-weight); letter-spacing: var(--heading-tracking); color: var(--text-primary); margin-bottom: 4px; }
+    .b-newsletter-desc { font-family: var(--font-body); font-size: calc(var(--size-body) * var(--font-scale) * 0.875 * 1px); color: var(--text-secondary); }
+    .b-newsletter-form { display: flex; gap: 8px; flex-shrink: 0; }
+    .b-newsletter-form .b-input { width: 240px; }
+
+    /* Image card (card with image) */
+    .b-image-card { border: var(--card-border); border-radius: var(--radius-card); overflow: hidden; background: var(--bg-card); box-shadow: var(--card-shadow); }
+    .b-image-card-img { height: 160px; overflow: hidden; }
+    .b-image-card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .b-image-card-body { padding: var(--card-padding); }
+    .b-image-card-title { font-family: var(--font-heading); font-size: calc(var(--size-body) * var(--font-scale) * 1.15 * 1px); font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+    .b-image-card-desc { font-family: var(--font-body); font-size: calc(var(--size-body) * var(--font-scale) * 0.875 * 1px); color: var(--text-secondary); line-height: 1.5; }
+    .b-image-card-tag { font-family: var(--font-mono); font-size: calc(var(--size-label) * var(--font-scale) * 1px); text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px; display: block; }
+
+    /* Logo strip */
+    .b-logo-strip { display: flex; align-items: center; justify-content: center; gap: 32px; padding: 20px 0; }
+    .b-logo-strip-item { font-family: var(--font-heading); font-size: calc(var(--size-body) * var(--font-scale) * 1px); font-weight: 500; color: var(--text-secondary); opacity: .5; }
+
+    /* Imagery */
+    .img-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+    .img-card { border: 1px solid #E5E7EB; border-radius: 6px; overflow: hidden; }
+    .img-placeholder { height: 140px; overflow: hidden; }
+    .img-placeholder img { width: 100%; height: 100%; object-fit: cover; }
+    .img-card-info { padding: 8px; }
+    .img-card-title { font-size: 11px; font-weight: 600; margin-bottom: 1px; }
+    .img-card-desc { font-size: 10px; color: #777; line-height: 1.4; }
+
+    .structure-item { display: grid; grid-template-columns: 32px 120px 1fr; gap: 6px; padding: 6px 0; border-bottom: 1px solid #E5E7EB; }
+    .str-num { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #999; }
+    .str-name { font-size: 11px; font-weight: 600; }
+    .str-desc { font-size: 10px; color: #777; }
+    .anim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px; }
+    .anim-card { border: 1px solid #E5E7EB; border-radius: 6px; padding: 10px; }
+    .anim-name { font-size: 11px; font-weight: 600; }
+    .anim-detail { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #999; }
+    .anim-desc { font-size: 10px; color: #777; margin-top: 2px; }
+
+    .version-list { max-height: 140px; overflow-y: auto; }
+    .version-item { display: flex; align-items: center; gap: 4px; padding: 3px 0; border-bottom: 1px solid #eee; font-size: 9px; }
+    .version-name { flex: 1; cursor: pointer; font-weight: 500; }
+    .version-name:hover { text-decoration: underline; }
+    .version-time { font-family: 'JetBrains Mono', monospace; font-size: 7px; color: #bbb; }
+    .version-del { background: none; border: none; color: #ccc; cursor: pointer; font-size: 11px; }
+
+    .example-page { background: var(--bg-primary); }
+    .example-page .b-nav { position: sticky; top: 46px; z-index: 100; }
+    .ep-section { padding: calc(var(--section-padding) * var(--spacing-scale)) 0; }
+    .ep-container { max-width: var(--max-width); margin: 0 auto; padding: 0 calc(var(--container-padding) * var(--spacing-scale)); }
+    .ep-center { text-align: center; }
+  </style>
+</head>
+<body>
+<div id="app">
+<div id="main">
+
+<header class="guide-header">
+  <div class="header-top">
+    <div style="display:flex;align-items:baseline;"><h1>Brightbase.co</h1><span class="sub">Design System Workbench</span></div>
+    <div class="header-right"><nav class="guide-nav" id="navLinks"></nav><button class="toggle-btn" id="panelToggle">Adjust Tokens</button></div>
+  </div>
+  <div class="tab-bar"><button class="tab-btn active" data-tab="tab-ds">Design System</button><button class="tab-btn" data-tab="tab-example">Example Page</button></div>
+</header>
+
+<!-- ===================== TAB 1: DESIGN SYSTEM ===================== -->
+<div id="tab-ds" class="tab-content active">
+
+<!-- 01 COLORS + GRADIENTS -->
+<section class="guide-section" id="colors">
+  <div class="sn">01</div><h2 class="st">Color System</h2>
+  <p class="sd">Edit foundation colors. Scales auto-generate. Assign semantic tokens visually.</p>
+
+  <div class="harmony-row">
+    <select class="cp-select" id="harmonyMode" style="width:140px;font-size:9px;"><option value="analogous">Analogous</option><option value="complementary">Complementary</option><option value="triadic">Triadic</option><option value="split">Split-Comp</option></select>
+    <button class="cp-btn" id="generatePaletteBtn" style="flex:0;padding:4px 10px;font-size:9px;">Generate from Primary</button>
+    <button class="color-editor-add" id="addColorBtn">+ Add Color</button>
+  </div>
+  <div class="foundation-editor" id="foundationEditor"></div>
+
+  <div class="subsection"><h3>Scales</h3><div id="scaleDisplay"></div></div>
+
+  <div class="subsection"><h3>Semantic Assignments</h3><div id="semanticGridContainer"></div></div>
+  <div style="margin-top:12px;"><div class="color-grid" id="semanticSwatches"></div></div>
+
+  <div class="subsection"><h3>Gradients</h3>
+    <div class="grad-controls">
+      <div><div class="grad-control-label">Direction</div><div style="display:flex;gap:2px;margin-top:2px;" id="gradDirBtns"><button class="copy-btn" data-angle="0" style="padding:2px 5px;">&#8593;</button><button class="copy-btn" data-angle="45" style="padding:2px 5px;">&#8599;</button><button class="copy-btn" data-angle="90" style="padding:2px 5px;">&#8594;</button><button class="copy-btn" data-angle="135" style="padding:2px 5px;">&#8600;</button><button class="copy-btn" data-angle="180" style="padding:2px 5px;background:#1A1D21;color:#fff;">&#8595;</button></div></div>
+      <div><div class="grad-control-label">Mood: <span id="gradMoodVal">Medium</span></div><input type="range" min="1" max="3" value="2" step="1" id="gradMoodSlider" style="width:120px;accent-color:#1A1D21;"></div>
+      <div><div class="grad-control-label">Stops: <span id="gradStopsVal">2</span></div><input type="range" min="2" max="4" value="2" step="1" id="gradStopsSlider" style="width:80px;accent-color:#1A1D21;"></div>
+    </div>
+    <div id="gradEditorSlot"></div>
+    <div class="grad-grid" id="gradGrid"></div>
+  </div>
+</section>
+
+<!-- 02 TYPOGRAPHY -->
+<section class="guide-section" id="typography">
+  <div class="sn">02</div><h2 class="st">Typography</h2>
+  <p class="sd">Scalable type system. Adjust sizes, weight, and tracking in the panel.</p>
+  <div class="type-specimen"><div class="type-preview" style="overflow:hidden"><div class="b-heading" style="font-size:calc(var(--size-hero) * var(--font-scale) * 0.7 * 1px);line-height:1;">Don't wait for<br>the future. Build it.</div></div><div class="type-meta"><div class="type-meta-item"><label>Element</label><span>Hero</span></div><div class="type-meta-item"><label>Weight</label><span id="hero-weight-display">400</span></div><div class="type-meta-item"><label>Tracking</label><span id="hero-tracking-display">-0.01em</span></div></div></div>
+  <div class="type-specimen"><div class="type-preview"><div class="b-heading" style="font-size:calc(var(--size-section) * var(--font-scale) * 1px);text-align:center;">We're igniting a revolution.</div></div><div class="type-meta"><div class="type-meta-item"><label>Element</label><span>Section</span></div></div></div>
+  <div class="type-specimen"><div class="type-preview"><div class="b-heading" style="font-size:calc(var(--size-feature) * var(--font-scale) * 1px);">A Community Feed Without the Noise</div></div><div class="type-meta"><div class="type-meta-item"><label>Element</label><span>Feature</span></div></div></div>
+  <div class="type-specimen"><div class="type-preview"><div style="font-family:var(--font-body);font-size:calc(var(--size-body) * var(--font-scale) * 1px);color:var(--text-secondary);line-height:1.6;max-width:480px">Focused posts, helpful voices, and genuine conversations that move your work forward.</div></div><div class="type-meta"><div class="type-meta-item"><label>Element</label><span>Body</span></div></div></div>
+  <div class="type-specimen"><div class="type-preview" style="display:flex;gap:14px"><span style="font-family:var(--font-mono);font-size:calc(var(--size-label) * var(--font-scale) * 1px);letter-spacing:.03em;text-transform:uppercase;color:var(--text-primary)">SERVICES</span><span style="font-family:var(--font-mono);font-size:calc(var(--size-label) * var(--font-scale) * 1px);letter-spacing:.03em;text-transform:uppercase;color:var(--text-primary)">WORK</span><span style="font-family:var(--font-mono);font-size:calc(var(--size-label) * var(--font-scale) * 1px);letter-spacing:.03em;text-transform:uppercase;color:var(--text-primary)">ABOUT</span></div><div class="type-meta"><div class="type-meta-item"><label>Element</label><span>Labels (mono)</span></div></div></div>
+</section>
+
+<!-- 03 LAYOUT DNA -->
+<section class="guide-section full-width" id="layout" style="padding-left:0;padding-right:0;">
+  <div style="padding:0 32px;max-width:1200px;margin:0 auto;"><div class="sn">03</div><h2 class="st">Layout DNA</h2><p class="sd">Full-width sections, faint dividers, content hierarchy.</p></div>
+  <div class="layout-demo" style="border-radius:0;border-left:none;border-right:none;">
+    <div class="layout-demo-label">Section flow</div>
+    <div class="dna-fullwidth">
+      <div class="dna-section">
+        <span class="b-pill" data-icon="bolt"><i class="ti ti-bolt"></i> SECTION LABEL</span>
+        <div class="b-heading" style="font-size:calc(var(--size-feature) * var(--font-scale) * 1.1 * 1px);margin-top:14px;">The hierarchy pattern repeats</div>
+        <div style="font-family:var(--font-body);font-size:calc(var(--size-body) * var(--font-scale) * 1px);color:var(--text-secondary);margin-top:8px;max-width:500px;display:inline-block;">Pill, heading, body, bullets or CTA.</div>
+      </div>
+      <hr class="dna-divider">
+      <div style="text-align:center;padding:3px;"><span class="dna-annotation">1px solid var(--border-faint)</span></div>
+      <hr class="dna-divider">
+      <div class="dna-section" style="text-align:left;">
+        <span class="b-pill" data-icon="rocket"><i class="ti ti-rocket"></i> FEATURES</span>
+        <div class="b-heading" style="font-size:calc(var(--size-feature) * var(--font-scale) * 1px);margin-top:10px;">55/45 grid: screenshot + text</div>
+        <ul class="b-feature-bullets" style="margin-top:8px;"><li>MONOSPACE BULLETS</li><li>UPPERCASE + PREFIX</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 COMPONENTS -->
+<section class="guide-section" id="components">
+  <div class="sn">04</div><h2 class="st">Components</h2><p class="sd">Copy-paste ready. All use CSS variables.</p>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Nav</span><button class="copy-btn" data-target="c-nav">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:4px" id="c-nav"><nav class="b-nav"><div class="b-logo">BRIGHTBASE</div><div class="b-nav-links"><a class="b-nav-link">SERVICES</a><a class="b-nav-link">WORK</a><a class="b-nav-link">ABOUT</a><a class="b-btn" style="padding:6px 12px;">GET IN TOUCH</a></div></nav></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Pills</span><button class="copy-btn" data-target="c-pills">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:14px;display:flex;gap:6px;flex-wrap:wrap" id="c-pills"><span class="b-pill" data-icon="bolt"><i class="ti ti-bolt"></i> SERVICES</span><span class="b-pill" data-icon="user"><i class="ti ti-user"></i> WHO WE ARE</span><span class="b-pill" data-icon="rocket"><i class="ti ti-rocket"></i> GET STARTED</span></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Cards</span><button class="copy-btn" data-target="c-cards">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="c-cards"><div class="b-card"><div class="b-card-title">Card Title</div><div class="b-card-body">A simple card component using --card-padding, --card-border, --card-shadow, and --radius-card tokens.</div></div><div class="b-card"><div class="b-card-title">Another Card</div><div class="b-card-body">Adjust card styles in the sidebar panel.</div></div><div class="b-card"><div class="b-card-title">Third Card</div><div class="b-card-body">All cards auto-update when tokens change.</div></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Toggles + Badges</span><button class="copy-btn" data-target="c-toggles">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:14px;display:flex;gap:16px;align-items:center;flex-wrap:wrap" id="c-toggles"><div class="b-toggle" onclick="this.querySelector('.b-toggle-track').classList.toggle('on')"><div class="b-toggle-track on"><div class="b-toggle-thumb"></div></div><span class="b-toggle-label">Active</span></div><div class="b-toggle" onclick="this.querySelector('.b-toggle-track').classList.toggle('on')"><div class="b-toggle-track"><div class="b-toggle-thumb"></div></div><span class="b-toggle-label">Inactive</span></div><span class="b-badge b-badge-default">Default</span><span class="b-badge b-badge-accent">Pro</span><span class="b-badge b-badge-default">Beta</span></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Inputs</span><button class="copy-btn" data-target="c-inputs">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px" id="c-inputs"><div><label class="b-input-label">EMAIL</label><input class="b-input" type="text" placeholder="you@example.com"></div><div><label class="b-input-label">NAME</label><input class="b-input" type="text" placeholder="Your name"></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Tabs</span><button class="copy-btn" data-target="c-tabs">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:14px" id="c-tabs"><div class="b-tabs"><button class="b-tab active">OVERVIEW</button><button class="b-tab">FEATURES</button><button class="b-tab">PRICING</button><button class="b-tab">FAQ</button></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Avatar Group</span><button class="copy-btn" data-target="c-avatars">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:14px;display:flex;align-items:center;gap:12px" id="c-avatars"><div class="b-avatar-group"><div class="b-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" alt=""></div><div class="b-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt=""></div><div class="b-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop" alt=""></div></div><span style="font-family:var(--font-mono);font-size:calc(var(--size-label) * var(--font-scale) * 1px);color:var(--text-secondary);text-transform:uppercase;">+12 BUILDERS</span></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">4-Col Grid</span><button class="copy-btn" data-target="c-grid4">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:20px" id="c-grid4"><div class="b-grid-4"><div><div class="b-grid-item-icon" data-icon="bolt"><i class="ti ti-bolt"></i></div><div class="b-grid-item-title">Speed</div><div class="b-grid-item-body">Launch in hours.</div></div><div><div class="b-grid-item-icon" data-icon="rocket"><i class="ti ti-rocket"></i></div><div class="b-grid-item-title">Scale</div><div class="b-grid-item-body">Side project to enterprise.</div></div><div><div class="b-grid-item-icon" data-icon="palette"><i class="ti ti-palette"></i></div><div class="b-grid-item-title">Design</div><div class="b-grid-item-body">Beautiful defaults.</div></div><div><div class="b-grid-item-icon" data-icon="code"><i class="ti ti-code"></i></div><div class="b-grid-item-title">Code</div><div class="b-grid-item-body">Clean output.</div></div></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Stats</span><button class="copy-btn" data-target="c-stats">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:20px" id="c-stats"><div class="b-stats"><div><div class="b-stat-num">12K+</div><div class="b-stat-label">BUILDERS</div></div><div><div class="b-stat-num">450</div><div class="b-stat-label">SHIPPED</div></div><div><div class="b-stat-num">98%</div><div class="b-stat-label">SATISFACTION</div></div></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Testimonial</span><button class="copy-btn" data-target="c-test">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:14px" id="c-test"><div class="b-testimonial"><div class="b-testimonial-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" alt=""></div><div><div class="b-testimonial-quote">"This platform changed how I build."</div><div class="b-testimonial-name">SARAH CHEN &mdash; PIXELCRAFT</div></div></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Quote Block</span><button class="copy-btn" data-target="c-quote">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:14px" id="c-quote"><div class="b-quote-block"><div><div class="b-quote-mark">&ldquo;</div><div class="b-quote-text">I built this because something was missing.</div><div class="b-quote-author">LOREN POLSTER</div><div class="b-quote-role">FOUNDER &mdash; BRIGHTBASE</div></div><div class="b-quote-img"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" alt=""></div></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">FAQ</span><button class="copy-btn" data-target="c-faq">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:14px" id="c-faq"><div class="b-faq"><div class="b-faq-item open"><div class="b-faq-q" onclick="this.parentElement.classList.toggle('open')">What is Brightbase?</div><div class="b-faq-a">A design studio building brands and products.</div></div><div class="b-faq-item"><div class="b-faq-q" onclick="this.parentElement.classList.toggle('open')">How long does a project take?</div><div class="b-faq-a">Most ship in 2-4 weeks.</div></div></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Pricing</span><button class="copy-btn" data-target="c-pricing">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="c-pricing"><div class="b-pricing"><div class="b-pricing-tier">STARTER</div><div class="b-pricing-price">$29</div><div class="b-pricing-period">per month</div><ul class="b-pricing-features"><li>5 Projects</li><li>Basic analytics</li></ul><a class="b-btn" style="width:100%;text-align:center;">START</a></div><div class="b-pricing" style="border-color:var(--text-primary);"><div class="b-pricing-tier">PRO</div><div class="b-pricing-price">$79</div><div class="b-pricing-period">per month</div><ul class="b-pricing-features"><li>Unlimited</li><li>Priority support</li><li>Custom domain</li></ul><a class="b-btn" style="width:100%;text-align:center;background:var(--text-primary);color:var(--bg-card);">START</a></div><div class="b-pricing"><div class="b-pricing-tier">TEAM</div><div class="b-pricing-price">$199</div><div class="b-pricing-period">per month</div><ul class="b-pricing-features"><li>Everything in Pro</li><li>5 seats</li></ul><a class="b-btn" style="width:100%;text-align:center;">START</a></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Blog Cards</span><button class="copy-btn" data-target="c-articles">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="c-articles"><div class="b-article"><div class="b-article-img"><img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=400&h=200&fit=crop" alt=""></div><div class="b-article-body"><div class="b-article-cat">DESIGN</div><div class="b-article-title">Why You Need a Design System</div><div class="b-article-excerpt">Consistency builds trust.</div><div class="b-article-date">MAR 15</div></div></div><div class="b-article"><div class="b-article-img"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=200&fit=crop" alt=""></div><div class="b-article-body"><div class="b-article-cat">DEV</div><div class="b-article-title">Ship Faster with AI</div><div class="b-article-excerpt">Cut dev time in half.</div><div class="b-article-date">MAR 10</div></div></div><div class="b-article"><div class="b-article-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop" alt=""></div><div class="b-article-body"><div class="b-article-cat">STRATEGY</div><div class="b-article-title">Builder's Launch Guide</div><div class="b-article-excerpt">Idea to live in 30 days.</div><div class="b-article-date">MAR 5</div></div></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Hero</span><button class="copy-btn" data-target="c-hero">Copy</button></div><div class="comp-preview"><div id="c-hero"><div class="b-hero"><h2>Don't wait for the future. Build it.</h2><p>Join builders using AI to ship real things.</p><a class="b-btn b-btn-dark">GET STARTED</a></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">CTA</span><button class="copy-btn" data-target="c-cta">Copy</button></div><div class="comp-preview"><div id="c-cta"><div class="b-cta-hero"><span class="b-pill" data-icon="bolt"><i class="ti ti-bolt"></i> GET STARTED</span><h2>Start building<br>the future</h2><a class="b-btn b-btn-dark">JOIN BETA</a></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Footer</span><button class="copy-btn" data-target="c-footer">Copy</button></div><div class="comp-preview"><div id="c-footer"><div class="b-footer"><div class="b-footer-grid"><div><div class="b-footer-brand">BRIGHTBASE</div><div class="b-footer-desc">Design studio building brands.</div><a class="b-btn b-btn-dark" style="font-size:10px;padding:5px 10px;">CONTACT</a></div><div><div class="b-footer-col-title">NAV</div><a class="b-footer-link">Home</a><a class="b-footer-link">Services</a><a class="b-footer-link">Work</a></div><div><div class="b-footer-col-title">COMPANY</div><a class="b-footer-link">Blog</a><a class="b-footer-link">About</a></div><div><div class="b-footer-col-title">CONTACT</div><a class="b-footer-link">Email</a><a class="b-footer-link">LinkedIn</a></div></div><div class="b-footer-mark">BRIGHTBASE</div></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Image Cards</span><button class="copy-btn" data-target="c-imgcards">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="c-imgcards"><div class="b-image-card"><div class="b-image-card-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop" alt=""></div><div class="b-image-card-body"><span class="b-image-card-tag">Strategy</span><div class="b-image-card-title">Launch Playbook</div><div class="b-image-card-desc">From zero to live in 30 days with proven frameworks.</div></div></div><div class="b-image-card"><div class="b-image-card-img"><img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=400&h=200&fit=crop" alt=""></div><div class="b-image-card-body"><span class="b-image-card-tag">Design</span><div class="b-image-card-title">Brand Systems</div><div class="b-image-card-desc">Tokens, components, and guidelines that scale.</div></div></div><div class="b-image-card"><div class="b-image-card-img"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=200&fit=crop" alt=""></div><div class="b-image-card-body"><span class="b-image-card-tag">Dev</span><div class="b-image-card-title">Ship with AI</div><div class="b-image-card-desc">Cut build time in half with intelligent tooling.</div></div></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Testimonial Grid</span><button class="copy-btn" data-target="c-testgrid">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:14px" id="c-testgrid"><div class="b-testimonial-grid"><div class="b-testimonial-card"><div class="b-testimonial-card-quote">"Brightbase cut our launch timeline from months to weeks. The design system alone saved us hundreds of hours."</div><div class="b-testimonial-card-author"><div class="b-testimonial-card-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" alt=""></div><div class="b-testimonial-card-name">Sarah Chen &mdash; Pixelcraft</div></div></div><div class="b-testimonial-card"><div class="b-testimonial-card-quote">"Finally, a studio that understands builders. They shipped our MVP while others were still writing proposals."</div><div class="b-testimonial-card-author"><div class="b-testimonial-card-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt=""></div><div class="b-testimonial-card-name">Marcus Rivera &mdash; Launchpad</div></div></div><div class="b-testimonial-card"><div class="b-testimonial-card-quote">"The attention to detail is unreal. Every token, every component — it just works together beautifully."</div><div class="b-testimonial-card-author"><div class="b-testimonial-card-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop" alt=""></div><div class="b-testimonial-card-name">Anika Patel &mdash; Formstack</div></div></div></div></div></div></div>
+
+  <div class="comp-block"><div class="comp-header"><span class="comp-label">Newsletter</span><button class="copy-btn" data-target="c-newsletter">Copy</button></div><div class="comp-preview"><div class="comp-preview-inner" style="padding:14px" id="c-newsletter"><div class="b-newsletter"><div class="b-newsletter-text"><div class="b-newsletter-title">Stay in the loop</div><div class="b-newsletter-desc">Weekly insights on design, code, and building in public.</div></div><div class="b-newsletter-form"><input class="b-input" type="email" placeholder="you@example.com"><a class="b-btn" style="background:var(--text-primary);color:var(--bg-card);border-color:var(--text-primary);">SUBSCRIBE</a></div></div></div></div></div>
+</section>
+
+<!-- 05 IMAGERY -->
+<section class="guide-section" id="imagery">
+  <div class="sn">05</div><h2 class="st">Imagery</h2><p class="sd">Photography and visual treatment.</p>
+  <div class="img-grid">
+    <div class="img-card"><div class="img-placeholder"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&h=300&fit=crop" alt=""></div><div class="img-card-info"><div class="img-card-title">Hero</div><div class="img-card-desc">Cinematic, dark dramatic lighting.</div></div></div>
+    <div class="img-card"><div class="img-placeholder"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=300&fit=crop" alt=""></div><div class="img-card-info"><div class="img-card-title">Portraits</div><div class="img-card-desc">Warm tones, dramatic side light.</div></div></div>
+    <div class="img-card"><div class="img-placeholder" style="background:var(--bg-surface);display:flex;align-items:center;justify-content:center;"><div style="background:var(--bg-card);border:var(--card-border);border-radius:var(--radius-card);width:70%;height:70%;display:flex;align-items:center;justify-content:center;box-shadow:var(--card-shadow);font-size:9px;color:var(--text-secondary);">Product UI</div></div><div class="img-card-info"><div class="img-card-title">Screenshots</div><div class="img-card-desc">Soft corners, subtle shadow.</div></div></div>
+    <div class="img-card"><div class="img-placeholder"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop" alt=""></div><div class="img-card-info"><div class="img-card-title">CTA Background</div><div class="img-card-desc">Full-bleed + dark overlay.</div></div></div>
+  </div>
+</section>
+
+<!-- 06 STRUCTURE -->
+<section class="guide-section" id="structure">
+  <div class="sn">06</div><h2 class="st">Structure</h2>
+  <div><div class="structure-item"><div class="str-num">01</div><div class="str-name">Nav</div><div class="str-desc">Logo + links + CTA</div></div><div class="structure-item"><div class="str-num">02</div><div class="str-name">Hero</div><div class="str-desc">Full-bleed, large headline</div></div><div class="structure-item"><div class="str-num">03</div><div class="str-name">Value Prop</div><div class="str-desc">Centered pill + text</div></div><div class="structure-item"><div class="str-num">04</div><div class="str-name">Logo Bar</div><div class="str-desc">Trust indicators</div></div><div class="structure-item"><div class="str-num">05</div><div class="str-name">Features</div><div class="str-desc">4-col grid</div></div><div class="structure-item"><div class="str-num">06</div><div class="str-name">Quote</div><div class="str-desc">2-col: quote + portrait</div></div><div class="structure-item"><div class="str-num">07</div><div class="str-name">Deep-Dives</div><div class="str-desc">Alternating screenshot + text</div></div><div class="structure-item"><div class="str-num">08</div><div class="str-name">CTA</div><div class="str-desc">Full-bleed + button</div></div><div class="structure-item"><div class="str-num">09</div><div class="str-name">Footer</div><div class="str-desc">Dark, 4-col, brand mark</div></div></div>
+</section>
+
+<!-- 07 MOTION -->
+<section class="guide-section" id="animations">
+  <div class="sn">07</div><h2 class="st">Motion</h2>
+  <div class="anim-grid"><div class="anim-card"><div class="anim-name">Scroll Reveal</div><div class="anim-detail">Word-by-word opacity</div></div><div class="anim-card"><div class="anim-name">Button Hover</div><div class="anim-detail">0.15s bg darken</div></div><div class="anim-card"><div class="anim-name">Section Fade</div><div class="anim-detail">opacity + translateY, 0.4s</div></div></div>
+</section>
+</div><!-- /tab-ds -->
+
+<!-- ===================== TAB 2: EXAMPLE PAGE ===================== -->
+<div id="tab-example" class="tab-content">
+<div class="example-page">
+  <nav class="b-nav"><div class="b-logo">BRIGHTBASE</div><div class="b-nav-links"><a class="b-nav-link">SERVICES</a><a class="b-nav-link">WORK</a><a class="b-nav-link">ABOUT</a><a class="b-btn" style="padding:6px 12px;">GET IN TOUCH</a></div></nav>
+  <div class="b-hero" style="border-radius:0;min-height:380px;"><h2 style="max-width:560px;">Don't wait for the future. Build it.</h2><p>Where creators build together. Join builders using AI to ship real things.</p><a class="b-btn b-btn-dark">GET STARTED</a></div>
+  <div class="ep-section"><div class="ep-container ep-center"><span class="b-pill" data-icon="bolt"><i class="ti ti-bolt"></i> THE PLATFORM</span><h2 class="b-heading" style="font-size:calc(var(--size-section) * var(--font-scale) * 1px);margin-top:14px;max-width:700px;display:inline-block;">We're not launching a platform, we're igniting a revolution.</h2><p style="font-family:var(--font-body);font-size:calc(var(--size-body) * var(--font-scale) * 1px);color:var(--text-secondary);margin-top:10px;max-width:500px;display:inline-block;">A place where talented builders are seen and celebrated.</p></div></div>
+  <hr class="b-divider">
+  <div class="b-logo-bar"><div class="b-logo-bar-label">TRUSTED BY</div><div class="b-logo-bar-logos"><span class="b-logo-placeholder">Vercel</span><span class="b-logo-placeholder">Freepik</span><span class="b-logo-placeholder">n8n</span><span class="b-logo-placeholder">Lovable</span><span class="b-logo-placeholder">Flodesk</span></div></div>
+  <hr class="b-divider">
+  <div class="ep-section"><div class="ep-container"><span class="b-pill" data-icon="sparkles"><i class="ti ti-sparkles"></i> WHY BRIGHTBASE</span><div class="b-grid-4" style="margin-top:24px;"><div><div class="b-grid-item-icon" data-icon="bolt"><i class="ti ti-bolt"></i></div><div class="b-grid-item-title">Speed</div><div class="b-grid-item-body">Build and launch in hours.</div></div><div><div class="b-grid-item-icon" data-icon="rocket"><i class="ti ti-rocket"></i></div><div class="b-grid-item-title">Scale</div><div class="b-grid-item-body">Side project to enterprise.</div></div><div><div class="b-grid-item-icon" data-icon="palette"><i class="ti ti-palette"></i></div><div class="b-grid-item-title">Design</div><div class="b-grid-item-body">Beautiful defaults.</div></div><div><div class="b-grid-item-icon" data-icon="code"><i class="ti ti-code"></i></div><div class="b-grid-item-title">Code</div><div class="b-grid-item-body">Clean output you own.</div></div></div></div></div>
+  <hr class="b-divider">
+  <!-- NEW: Card Section -->
+  <div class="ep-section"><div class="ep-container ep-center"><span class="b-pill" data-icon="sparkles"><i class="ti ti-sparkles"></i> RESOURCES</span><h2 class="b-heading" style="font-size:calc(var(--size-section) * var(--font-scale) * 1px);margin-top:14px;display:inline-block;">Everything you need to ship</h2><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--gap-element) * var(--spacing-scale));margin-top:24px;text-align:left;"><div class="b-image-card"><div class="b-image-card-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=260&fit=crop" alt=""></div><div class="b-image-card-body"><span class="b-image-card-tag">Strategy</span><div class="b-image-card-title">Launch Playbook</div><div class="b-image-card-desc">From zero to live in 30 days with proven frameworks and templates.</div></div></div><div class="b-image-card"><div class="b-image-card-img"><img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=500&h=260&fit=crop" alt=""></div><div class="b-image-card-body"><span class="b-image-card-tag">Design</span><div class="b-image-card-title">Brand Systems</div><div class="b-image-card-desc">Tokens, components, and guidelines that scale with your product.</div></div></div><div class="b-image-card"><div class="b-image-card-img"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=260&fit=crop" alt=""></div><div class="b-image-card-body"><span class="b-image-card-tag">Dev</span><div class="b-image-card-title">Ship with AI</div><div class="b-image-card-desc">Cut build time in half with intelligent tooling and automation.</div></div></div></div></div></div>
+  <hr class="b-divider">
+  <div class="ep-section"><div class="ep-container ep-center"><div class="b-stats" style="justify-content:center;"><div><div class="b-stat-num">12K+</div><div class="b-stat-label">BUILDERS</div></div><div><div class="b-stat-num">450</div><div class="b-stat-label">SHIPPED</div></div><div><div class="b-stat-num">98%</div><div class="b-stat-label">SATISFACTION</div></div></div></div></div>
+  <hr class="b-divider">
+  <div class="ep-section"><div class="ep-container"><div class="b-quote-block"><div><div class="b-quote-mark">&ldquo;</div><div class="b-quote-text">I built this because something was missing. No place for builders to be seen or celebrated.</div><div class="b-quote-author">LOREN POLSTER</div><div class="b-quote-role">FOUNDER &mdash; BRIGHTBASE</div></div><div class="b-quote-img"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=500&fit=crop" alt=""></div></div></div></div>
+  <hr class="b-divider">
+  <!-- NEW: Testimonial Grid -->
+  <div class="ep-section"><div class="ep-container ep-center"><span class="b-pill" data-icon="user"><i class="ti ti-user"></i> TESTIMONIALS</span><h2 class="b-heading" style="font-size:calc(var(--size-section) * var(--font-scale) * 1px);margin-top:14px;display:inline-block;">Loved by builders</h2><div class="b-testimonial-grid" style="margin-top:24px;text-align:left;"><div class="b-testimonial-card"><div class="b-testimonial-card-quote">"Brightbase cut our launch timeline from months to weeks. The design system alone saved us hundreds of hours."</div><div class="b-testimonial-card-author"><div class="b-testimonial-card-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" alt=""></div><div class="b-testimonial-card-name">Sarah Chen &mdash; Pixelcraft</div></div></div><div class="b-testimonial-card"><div class="b-testimonial-card-quote">"Finally, a studio that understands builders. They shipped our MVP while others were still writing proposals."</div><div class="b-testimonial-card-author"><div class="b-testimonial-card-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt=""></div><div class="b-testimonial-card-name">Marcus Rivera &mdash; Launchpad</div></div></div><div class="b-testimonial-card"><div class="b-testimonial-card-quote">"The attention to detail is unreal. Every token, every component — it just works together beautifully."</div><div class="b-testimonial-card-author"><div class="b-testimonial-card-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop" alt=""></div><div class="b-testimonial-card-name">Anika Patel &mdash; Formstack</div></div></div></div></div></div>
+  <hr class="b-divider">
+  <div class="ep-section"><div class="ep-container"><div class="b-feature"><div class="b-feature-img"><img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=700&h=400&fit=crop" alt=""></div><div><div class="b-feature-label">FEED</div><div class="b-feature-heading">A Community Feed Without the Noise</div><div class="b-feature-body">Focused posts that move work forward.</div><ul class="b-feature-bullets"><li>ASK QUESTIONS</li><li>SHARE WINS</li></ul></div></div></div></div>
+  <hr class="b-divider">
+  <div class="ep-section"><div class="ep-container"><div class="b-feature" style="grid-template-columns:1fr 55%;"><div><div class="b-feature-label">TOOLS</div><div class="b-feature-heading">Smart Tools for Builders</div><div class="b-feature-body">Ship faster with AI automation.</div><ul class="b-feature-bullets"><li>DRAG AND DROP</li><li>ONE-CLICK DEPLOY</li></ul></div><div class="b-feature-img"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=700&h=400&fit=crop" alt=""></div></div></div></div>
+  <hr class="b-divider">
+  <!-- NEW: Pricing -->
+  <div class="ep-section"><div class="ep-container ep-center"><span class="b-pill" data-icon="bolt"><i class="ti ti-bolt"></i> PRICING</span><h2 class="b-heading" style="font-size:calc(var(--size-section) * var(--font-scale) * 1px);margin-top:14px;display:inline-block;">Simple, transparent pricing</h2><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--gap-element) * var(--spacing-scale));margin-top:24px;"><div class="b-pricing"><div class="b-pricing-tier">STARTER</div><div class="b-pricing-price">$29</div><div class="b-pricing-period">per month</div><ul class="b-pricing-features"><li>5 Projects</li><li>Basic analytics</li><li>Community access</li></ul><a class="b-btn" style="width:100%;text-align:center;">START</a></div><div class="b-pricing" style="border-color:var(--text-primary);"><div class="b-pricing-tier">PRO</div><div class="b-pricing-price">$79</div><div class="b-pricing-period">per month</div><ul class="b-pricing-features"><li>Unlimited projects</li><li>Priority support</li><li>Custom domain</li></ul><a class="b-btn" style="width:100%;text-align:center;background:var(--text-primary);color:var(--bg-card);">START</a></div><div class="b-pricing"><div class="b-pricing-tier">TEAM</div><div class="b-pricing-price">$199</div><div class="b-pricing-period">per month</div><ul class="b-pricing-features"><li>Everything in Pro</li><li>5 seats</li><li>Admin dashboard</li></ul><a class="b-btn" style="width:100%;text-align:center;">START</a></div></div></div></div>
+  <hr class="b-divider">
+  <!-- NEW: FAQ -->
+  <div class="ep-section"><div class="ep-container" style="max-width:700px;"><h2 class="b-heading" style="font-size:calc(var(--size-section) * var(--font-scale) * 1px);text-align:center;margin-bottom:20px;">Frequently asked questions</h2><div class="b-faq"><div class="b-faq-item open"><div class="b-faq-q" onclick="this.parentElement.classList.toggle('open')">What is Brightbase?</div><div class="b-faq-a">A design studio that helps builders ship faster. We combine brand strategy, design systems, and development into a single streamlined process.</div></div><div class="b-faq-item"><div class="b-faq-q" onclick="this.parentElement.classList.toggle('open')">How long does a project take?</div><div class="b-faq-a">Most projects ship in 2-4 weeks. We move fast because we use proven systems and AI-assisted workflows.</div></div><div class="b-faq-item"><div class="b-faq-q" onclick="this.parentElement.classList.toggle('open')">Do I own the code?</div><div class="b-faq-a">Yes, 100%. Everything we build is yours — the code, the design files, the brand assets. No lock-in.</div></div><div class="b-faq-item"><div class="b-faq-q" onclick="this.parentElement.classList.toggle('open')">Can I upgrade later?</div><div class="b-faq-a">Absolutely. All plans can be upgraded or downgraded at any time. Changes take effect on your next billing cycle.</div></div></div></div></div>
+  <hr class="b-divider">
+  <!-- NEW: Newsletter -->
+  <div class="ep-section"><div class="ep-container"><div class="b-newsletter"><div class="b-newsletter-text"><div class="b-newsletter-title">Stay in the loop</div><div class="b-newsletter-desc">Weekly insights on design, code, and building in public.</div></div><div class="b-newsletter-form"><input class="b-input" type="email" placeholder="you@example.com"><a class="b-btn" style="background:var(--text-primary);color:var(--bg-card);border-color:var(--text-primary);">SUBSCRIBE</a></div></div></div></div>
+  <hr class="b-divider">
+  <!-- NEW: Blog Cards -->
+  <div class="ep-section"><div class="ep-container ep-center"><span class="b-pill" data-icon="rocket"><i class="ti ti-rocket"></i> FROM THE BLOG</span><h2 class="b-heading" style="font-size:calc(var(--size-section) * var(--font-scale) * 1px);margin-top:14px;display:inline-block;">Latest from the team</h2><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--gap-element) * var(--spacing-scale));margin-top:24px;text-align:left;"><div class="b-article"><div class="b-article-img"><img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=400&h=200&fit=crop" alt=""></div><div class="b-article-body"><div class="b-article-cat">DESIGN</div><div class="b-article-title">Why You Need a Design System</div><div class="b-article-excerpt">Consistency builds trust. Here's how to start.</div><div class="b-article-date">MAR 15</div></div></div><div class="b-article"><div class="b-article-img"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=200&fit=crop" alt=""></div><div class="b-article-body"><div class="b-article-cat">DEV</div><div class="b-article-title">Ship Faster with AI</div><div class="b-article-excerpt">Cut dev time in half with the right tools.</div><div class="b-article-date">MAR 10</div></div></div><div class="b-article"><div class="b-article-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop" alt=""></div><div class="b-article-body"><div class="b-article-cat">STRATEGY</div><div class="b-article-title">Builder's Launch Guide</div><div class="b-article-excerpt">Idea to live in 30 days.</div><div class="b-article-date">MAR 5</div></div></div></div></div></div>
+  <div class="b-cta-hero" style="border-radius:0;"><span class="b-pill" data-icon="bolt"><i class="ti ti-bolt"></i> GET STARTED</span><h2>Start building<br>the future</h2><a class="b-btn b-btn-dark">JOIN BETA</a></div>
+  <div class="b-footer" style="border-radius:0;"><div class="b-footer-grid"><div><div class="b-footer-brand">BRIGHTBASE</div><div class="b-footer-desc">Design studio building brands.</div><a class="b-btn b-btn-dark" style="font-size:10px;padding:5px 10px;">CONTACT</a></div><div><div class="b-footer-col-title">NAV</div><a class="b-footer-link">Home</a><a class="b-footer-link">Services</a></div><div><div class="b-footer-col-title">COMPANY</div><a class="b-footer-link">Blog</a><a class="b-footer-link">About</a></div><div><div class="b-footer-col-title">CONTACT</div><a class="b-footer-link">Email</a><a class="b-footer-link">LinkedIn</a></div></div><div class="b-footer-mark">BRIGHTBASE</div></div>
+</div></div>
+
+</div><!-- /main -->
+
+<!-- ===================== SIDEBAR ===================== -->
+<aside id="sidebar"><div class="sidebar-inner">
+
+  <div class="cp-group"><div class="cp-group-title">Fonts</div>
+    <div class="cp-row"><span class="cp-label">Heading</span><div class="font-picker-wrap" data-var="--font-heading" data-category="sans"></div></div>
+    <div class="cp-row"><span class="cp-label">Body</span><div class="font-picker-wrap" data-var="--font-body" data-category="sans"></div></div>
+    <div class="cp-row"><span class="cp-label">Mono</span><div class="font-picker-wrap" data-var="--font-mono" data-category="mono"></div></div>
+  </div>
+
+  <div class="cp-group"><div class="cp-group-title">Icons</div>
+    <div class="cp-row"><span class="cp-label">Library</span><select class="cp-select" id="iconLibrarySelect"><option value="tabler">Tabler</option><option value="tabler-filled">Tabler Filled</option><option value="lucide">Lucide</option><option value="phosphor">Phosphor</option><option value="phosphor-fill">Phosphor Fill</option><option value="feather">Feather</option><option value="material">Material</option><option value="material-fill">Material Fill</option></select></div>
+    <div class="icon-preview-grid" id="iconPreview"></div>
+    <div class="cp-row"><span class="cp-label">Size</span><input type="range" min="16" max="48" value="24" data-var="--icon-size" data-unit="px"><span class="cp-val">24</span></div>
+  </div>
+
+  <div class="cp-group"><div class="cp-group-title">Heading Style</div>
+    <div class="cp-row"><span class="cp-label">Weight</span><input type="range" min="300" max="700" value="400" step="100" data-var="--heading-weight"><span class="cp-val">400</span></div>
+    <div class="cp-row"><span class="cp-label">Tracking</span><input type="range" min="-40" max="20" value="-1" data-var="--heading-tracking" data-unit2="em" data-divisor2="1000"><span class="cp-val">-0.01em</span></div>
+  </div>
+
+  <div class="cp-group"><div class="cp-group-title">Type Scale</div>
+    <div class="cp-row"><span class="cp-label">Global</span><input type="range" min="50" max="200" value="100" data-var="--font-scale" data-divisor="100" data-global="font"><span class="cp-val">1.0x</span></div>
+    <div class="cp-row"><span class="cp-label">Hierarchy</span><input type="range" min="50" max="200" value="100" data-var="hierarchy" data-divisor="100"><span class="cp-val">1.0x</span></div>
+    <hr class="cp-divider">
+    <div class="cp-row"><span class="cp-label">Hero</span><input type="range" min="60" max="160" value="120" data-var="--size-hero" data-scaled="font"><span class="cp-val">120</span></div>
+    <div class="cp-row"><span class="cp-label">Section</span><input type="range" min="28" max="80" value="48" data-var="--size-section" data-scaled="font"><span class="cp-val">48</span></div>
+    <div class="cp-row"><span class="cp-label">Feature</span><input type="range" min="20" max="56" value="32" data-var="--size-feature" data-scaled="font"><span class="cp-val">32</span></div>
+    <div class="cp-row"><span class="cp-label">Body</span><input type="range" min="12" max="24" value="16" data-var="--size-body" data-scaled="font"><span class="cp-val">16</span></div>
+    <div class="cp-row"><span class="cp-label">Label</span><input type="range" min="8" max="16" value="10" data-var="--size-label" data-scaled="font"><span class="cp-val">10</span></div>
+    <div class="cp-row"><span class="cp-label">Button</span><input type="range" min="12" max="24" value="16" data-var="--size-button" data-scaled="font"><span class="cp-val">16</span></div>
+  </div>
+
+  <div class="cp-group"><div class="cp-group-title">Spacing</div>
+    <div class="cp-row"><span class="cp-label">Global</span><input type="range" min="50" max="200" value="100" data-var="--spacing-scale" data-divisor="100" data-global="spacing"><span class="cp-val">1.0x</span></div>
+    <hr class="cp-divider">
+    <div class="cp-row"><span class="cp-label">Section</span><input type="range" min="20" max="200" value="80" data-var="--section-padding" data-unit="px" data-scaled="spacing"><span class="cp-val">80</span></div>
+    <div class="cp-row"><span class="cp-label">Container</span><input type="range" min="8" max="80" value="32" data-var="--container-padding" data-unit="px" data-scaled="spacing"><span class="cp-val">32</span></div>
+    <div class="cp-row"><span class="cp-label">Comp Gap</span><input type="range" min="8" max="80" value="48" data-var="--gap-component" data-unit="px" data-scaled="spacing"><span class="cp-val">48</span></div>
+    <div class="cp-row"><span class="cp-label">Max Width</span><input type="range" min="800" max="2400" value="1800" data-var="--max-width" data-unit="px"><span class="cp-val">1800</span></div>
+  </div>
+
+  <div class="cp-group"><div class="cp-group-title">Card Style</div>
+    <div class="cp-row"><span class="cp-label">Radius</span><input type="range" min="0" max="32" value="8" data-var="--radius-card" data-unit="px"><span class="cp-val">8</span></div>
+    <div class="cp-row"><span class="cp-label">Btn Radius</span><input type="range" min="0" max="200" value="200" data-var="--radius-button" data-unit="px"><span class="cp-val">full</span></div>
+    <div class="cp-row"><span class="cp-label">Padding</span><input type="range" min="8" max="48" value="24" data-var="--card-padding" data-unit="px"><span class="cp-val">24</span></div>
+    <div class="cp-row"><span class="cp-label">Shadow</span><select class="cp-select" id="cardShadowSelect"><option value="none">None</option><option value="0 1px 3px rgba(0,0,0,.06)" selected>Subtle</option><option value="0 4px 12px rgba(0,0,0,.08)">Medium</option><option value="0 8px 24px rgba(0,0,0,.12)">Strong</option></select></div>
+  </div>
+
+  <div class="cp-group"><div class="cp-group-title">Versions</div>
+    <div class="cp-actions" style="margin-top:0;"><button class="cp-btn" id="saveVersionBtn">Save</button><button class="cp-btn" id="exportVersionsBtn">Export</button><button class="cp-btn" id="importVersionsBtn">Import</button><input type="file" id="importFile" accept=".json" style="display:none;"></div>
+    <div class="version-list" id="versionList"></div>
+  </div>
+
+  <div class="cp-actions"><button class="cp-btn" id="resetBtn">Reset</button><button class="cp-btn primary" id="exportBtn">Export CSS</button></div>
+</div></aside>
+</div><!-- /app -->
+
+<script>
+const SANS_FONTS = ['DM Sans','Inter','Space Grotesk','Plus Jakarta Sans','Outfit','Manrope','Sora','Figtree','Poppins','Work Sans','Rubik','Karla','Urbanist','Albert Sans','Red Hat Display','Lexend','Be Vietnam Pro','Onest'];
+const MONO_FONTS = ['Fragment Mono','JetBrains Mono','Fira Code','Source Code Pro','IBM Plex Mono','Space Mono','Roboto Mono','DM Mono','Inconsolata'];
+
+const FOUNDATION_DEFAULTS = [{name:'primary',hex:'#8B7355'},{name:'secondary',hex:'#616161'},{name:'accent',hex:'#E25F59'},{name:'neutral',hex:'#F2EFE9'},{name:'dark',hex:'#1F1915'}];
+const SEMANTIC_TOKENS = ['--bg-primary','--bg-surface','--bg-card','--text-primary','--text-secondary','--border','--border-faint','--footer-bg','--footer-text'];
+const SEMANTIC_LABELS = {'--bg-primary':'bg-primary','--bg-surface':'bg-surface','--bg-card':'bg-card','--text-primary':'text-primary','--text-secondary':'text-secondary','--border':'border','--border-faint':'border-faint','--footer-bg':'footer-bg','--footer-text':'footer-text'};
+const SEMANTIC_DEFAULTS = {'--bg-primary':['neutral',1],'--bg-surface':['neutral',2],'--bg-card':['white',0],'--text-primary':['dark',8],'--text-secondary':['dark',4],'--border':['neutral',3],'--border-faint':['neutral',2],'--footer-bg':['dark',9],'--footer-text':['neutral',0]};
+
+let foundationColors = JSON.parse(JSON.stringify(FOUNDATION_DEFAULTS));
+let scales = {};
+let semanticMap = JSON.parse(JSON.stringify(SEMANTIC_DEFAULTS));
+let customGradients = [];
+let gradAngle = 180, gradMood = 2, gradStops = 2;
+let currentIconLib = 'tabler';
+
+function getFoundation() { const o = {}; foundationColors.forEach(c => o[c.name] = c.hex); return o; }
+function generateScale(hex) { try { return chroma.scale(['#ffffff', hex, '#000000']).mode('lab').colors(11).slice(1,11); } catch { return Array(10).fill(hex); } }
+
+function regenerateAll() {
+  const f = getFoundation();
+  Object.keys(f).forEach(k => { scales[k] = generateScale(f[k]); });
+  scales['white'] = ['#ffffff'];
+  applySemanticTokens();
+  renderScaleDisplay();
+  renderSemanticSwatches();
+  buildSemanticGrid();
+  generateGradients();
+}
+
+function applySemanticTokens() {
+  Object.entries(semanticMap).forEach(([token, [sn, idx]]) => {
+    const hex = sn === 'white' ? '#ffffff' : (scales[sn]?.[idx]) || '#000';
+    document.documentElement.style.setProperty(token, hex);
+  });
+}
+
+// --- Foundation Editor (large swatches) ---
+function renderFoundationEditor() {
+  const el = document.getElementById('foundationEditor');
+  el.innerHTML = foundationColors.map((c, i) => {
+    const removable = !['primary','neutral','dark'].includes(c.name);
+    return `<div class="foundation-item"><div class="foundation-swatch-wrap"><input type="color" value="${c.hex}" data-fidx="${i}">${removable ? `<button class="foundation-remove" data-fidx="${i}">&times;</button>` : ''}</div><div class="foundation-name">${c.name}</div><div class="foundation-hex">${c.hex}</div></div>`;
+  }).join('');
+  el.querySelectorAll('input[type="color"]').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const i = +inp.dataset.fidx;
+      foundationColors[i].hex = inp.value;
+      inp.closest('.foundation-item').querySelector('.foundation-hex').textContent = inp.value;
+      regenerateAll();
+    });
+  });
+  el.querySelectorAll('.foundation-remove').forEach(btn => {
+    btn.addEventListener('click', () => { foundationColors.splice(+btn.dataset.fidx, 1); renderFoundationEditor(); regenerateAll(); });
+  });
+}
+
+document.getElementById('addColorBtn').addEventListener('click', () => {
+  const names = ['accent2','accent3','secondary2','secondary3','color6','color7'];
+  const name = names.find(n => !foundationColors.some(c => c.name === n)) || `color${foundationColors.length+1}`;
+  foundationColors.push({name, hex: chroma.random().hex()});
+  renderFoundationEditor(); regenerateAll();
+});
+
+function renderScaleDisplay() {
+  const f = getFoundation();
+  document.getElementById('scaleDisplay').innerHTML = Object.entries(scales).filter(([k]) => k !== 'white').map(([k, stops]) =>
+    `<div class="scale-display"><div class="scale-display-label">${k} <span style="color:#ccc;">${f[k]||''}</span></div><div class="scale-display-strip">${stops.map((s,i) => `<div class="scale-display-stop" style="background:${s}" title="${s}"></div>`).join('')}</div></div>`
+  ).join('');
+}
+
+function renderSemanticSwatches() {
+  document.getElementById('semanticSwatches').innerHTML = Object.entries(semanticMap).map(([token, [sn, idx]]) => {
+    const hex = sn === 'white' ? '#fff' : (scales[sn]?.[idx]) || '#000';
+    return `<div class="color-card"><div class="color-swatch" style="background:${hex}"></div><div class="color-info"><div class="color-name">${token.replace('--','')}</div><div class="color-value">${hex}</div></div></div>`;
+  }).join('');
+}
+
+// --- Popup Picker for Semantic ---
+let openPopup = null;
+function closeSemanticPopup() { if (openPopup) { openPopup.classList.remove('open'); openPopup = null; } }
+document.addEventListener('click', (e) => { if (openPopup && !e.target.closest('.semantic-row')) closeSemanticPopup(); });
+
+function getSemanticLabel(sname, sidx) {
+  return sname === 'white' ? 'white' : `${sname}-${(sidx+1)*100}`;
+}
+
+function buildSemanticGrid() {
+  const container = document.getElementById('semanticGridContainer');
+  container.className = 'semantic-grid-container';
+
+  // Build grouped swatches for popup
+  const scaleGroups = [{name:'white', swatches:[{name:'white',idx:0,hex:'#ffffff',label:'white'}]}];
+  Object.entries(scales).filter(([k]) => k !== 'white').forEach(([name, stops]) => {
+    scaleGroups.push({name, swatches: stops.map((hex, i) => ({name, idx:i, hex, label:`${name}-${(i+1)*100}`}))});
+  });
+
+  container.innerHTML = SEMANTIC_TOKENS.map(token => {
+    const [curName, curIdx] = semanticMap[token] || ['neutral',1];
+    const curHex = curName === 'white' ? '#fff' : (scales[curName]?.[curIdx]) || '#000';
+    const curLabel = getSemanticLabel(curName, curIdx);
+    return `<div class="semantic-row" data-token="${token}">
+      <span class="semantic-label">${SEMANTIC_LABELS[token]}</span>
+      <div>
+        <div class="semantic-trigger" style="background:${curHex}" data-token="${token}"><span class="semantic-trigger-arrow">&#9662;</span></div>
+        <div class="semantic-trigger-meta">${curLabel}</div>
+      </div>
+      <div class="semantic-popup">
+        ${scaleGroups.map(g => `<div class="semantic-popup-group-title">${g.name}</div><div class="semantic-popup-swatches">${g.swatches.map(s => {
+          const isActive = (s.name === 'white' && curName === 'white') || (s.name === curName && s.idx === curIdx);
+          return `<div class="semantic-popup-swatch${isActive ? ' active' : ''}" style="background:${s.hex}" data-sname="${s.name}" data-sidx="${s.idx}" title="${s.label}"></div>`;
+        }).join('')}</div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Trigger click — open popup
+  container.querySelectorAll('.semantic-trigger').forEach(trig => {
+    trig.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const popup = trig.closest('.semantic-row').querySelector('.semantic-popup');
+      if (openPopup === popup) { closeSemanticPopup(); return; }
+      closeSemanticPopup();
+      popup.classList.add('open');
+      openPopup = popup;
+    });
+  });
+
+  // Swatch click — assign color
+  container.querySelectorAll('.semantic-popup-swatch').forEach(sw => {
+    sw.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const row = sw.closest('.semantic-row');
+      const token = row.dataset.token;
+      const sname = sw.dataset.sname;
+      const sidx = parseInt(sw.dataset.sidx);
+      semanticMap[token] = [sname, sidx];
+      const hex = sname === 'white' ? '#fff' : (scales[sname]?.[sidx]) || '#000';
+      row.querySelector('.semantic-trigger').style.background = hex;
+      row.querySelector('.semantic-trigger-meta').textContent = getSemanticLabel(sname, sidx);
+      row.querySelectorAll('.semantic-popup-swatch').forEach(s => s.classList.remove('active'));
+      sw.classList.add('active');
+      closeSemanticPopup();
+      applySemanticTokens();
+      renderSemanticSwatches();
+    });
+  });
+}
+
+// --- Palette Generator ---
+document.getElementById('generatePaletteBtn').addEventListener('click', () => {
+  const prim = foundationColors.find(c => c.name === 'primary');
+  if (!prim) return;
+  try {
+    const [h, s] = chroma(prim.hex).hsl();
+    const hh = isNaN(h) ? 0 : h;
+    const mode = document.getElementById('harmonyMode').value;
+    let secHue, accHue;
+    if (mode === 'complementary') { secHue = hh+180; accHue = hh+210; }
+    else if (mode === 'analogous') { secHue = hh+30; accHue = hh-30; }
+    else if (mode === 'triadic') { secHue = hh+120; accHue = hh+240; }
+    else { secHue = hh+150; accHue = hh+210; }
+    const upd = (n, hex) => { const c = foundationColors.find(x => x.name === n); if (c) c.hex = hex; };
+    upd('secondary', chroma.hsl(secHue%360, Math.min(s||0.3, 0.4), 0.45).hex());
+    foundationColors.filter(c => c.name.startsWith('accent')).forEach((c, i) => {
+      c.hex = chroma.hsl((accHue + i*30)%360, Math.max(s||0.3, 0.5), 0.55 - i*0.05).hex();
+    });
+    upd('neutral', chroma.hsl(hh, Math.min(s||0.05, 0.08), 0.93).hex());
+    upd('dark', chroma.hsl(hh, Math.min(s||0.05, 0.15), 0.1).hex());
+    renderFoundationEditor(); regenerateAll();
+  } catch(e) { console.error(e); }
+});
+
+// --- Tabs ---
+const DS_LINKS = [['#colors','Colors'],['#typography','Type'],['#layout','Layout'],['#components','Components'],['#imagery','Imagery']];
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelector(`[data-tab="${id}"]`).classList.add('active');
+  document.getElementById('navLinks').innerHTML = (id === 'tab-ds' ? DS_LINKS : [['#tab-example','Top']]).map(([h,l]) => `<a href="${h}">${l}</a>`).join('');
+}
+document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+switchTab('tab-ds');
+
+document.getElementById('panelToggle').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('panelToggle').textContent = document.getElementById('sidebar').classList.contains('open') ? 'Close' : 'Adjust Tokens';
+});
+
+// --- Slider handlers ---
+function updateScaledDisplays(type) {
+  const g = document.querySelector(`[data-global="${type}"]`);
+  if (!g) return;
+  const sc = g.value / parseFloat(g.dataset.divisor);
+  document.querySelectorAll(`[data-scaled="${type}"]`).forEach(s => {
+    const base = parseInt(s.value), eff = Math.round(base * sc);
+    const v = s.parentElement.querySelector('.cp-val');
+    if (v) v.textContent = sc === 1 ? base : eff;
+  });
+}
+
+function setupInputs() {
+  document.querySelectorAll('#sidebar input[type="range"]').forEach(slider => {
+    const valEl = slider.parentElement.querySelector('.cp-val');
+    slider.addEventListener('input', () => {
+      const vn = slider.dataset.var;
+      if (vn === 'hierarchy') { applyHierarchy(slider.value / 100); if (valEl) valEl.textContent = (slider.value/100).toFixed(1)+'x'; return; }
+      if (vn === '--heading-tracking') {
+        const em = slider.value / 1000;
+        document.documentElement.style.setProperty(vn, em + 'em');
+        if (valEl) valEl.textContent = em.toFixed(2) + 'em';
+        const htd = document.getElementById('hero-tracking-display'); if (htd) htd.textContent = em.toFixed(2) + 'em';
+        return;
+      }
+      if (vn === '--heading-weight') {
+        document.documentElement.style.setProperty(vn, slider.value);
+        if (valEl) valEl.textContent = slider.value;
+        const hwd = document.getElementById('hero-weight-display'); if (hwd) hwd.textContent = slider.value;
+        return;
+      }
+      if (slider.dataset.divisor) {
+        const v = slider.value / parseFloat(slider.dataset.divisor);
+        document.documentElement.style.setProperty(vn, v);
+        if (valEl) valEl.textContent = v.toFixed(1)+'x';
+        if (slider.dataset.global) updateScaledDisplays(slider.dataset.global);
+      } else {
+        document.documentElement.style.setProperty(vn, slider.value + (slider.dataset.unit || ''));
+        if (valEl) { if (vn === '--radius-button' && slider.value >= 200) valEl.textContent = 'full'; else valEl.textContent = slider.value; }
+        if (slider.dataset.scaled) updateScaledDisplays(slider.dataset.scaled);
+      }
+    });
+  });
+  // Card shadow select
+  document.getElementById('cardShadowSelect').addEventListener('change', function() {
+    document.documentElement.style.setProperty('--card-shadow', this.value);
+  });
+}
+
+function applyHierarchy(str) {
+  const base = 16, ratios = { hero:7.5, section:3, feature:2, body:1, label:0.625, button:1 };
+  ['hero','section','feature','body','label','button'].forEach(k => {
+    const r = ratios[k], nr = r >= 1 ? Math.pow(r, str) : Math.pow(r, 1/str);
+    const ns = Math.round(base * nr);
+    document.documentElement.style.setProperty(`--size-${k}`, ns);
+    const s = document.querySelector(`input[data-var="--size-${k}"]`);
+    if (s) { s.value = ns; const v = s.parentElement.querySelector('.cp-val'); if (v) v.textContent = ns; }
+  });
+}
+
+// --- Font Pickers ---
+function buildFontPickers() {
+  document.querySelectorAll('.font-picker-wrap').forEach(wrap => {
+    const vn = wrap.dataset.var, fonts = wrap.dataset.category === 'mono' ? MONO_FONTS : SANS_FONTS;
+    const cs = getComputedStyle(document.documentElement).getPropertyValue(vn).trim();
+    const cur = fonts.find(f => cs.includes(f)) || fonts[0];
+    const fb = wrap.dataset.category === 'mono' ? 'monospace' : 'sans-serif';
+    const btn = document.createElement('button'); btn.className = 'font-picker-btn'; btn.style.fontFamily = `'${cur}',${fb}`;
+    btn.innerHTML = `<span>${cur}</span><span style="font-size:8px;color:#999;">&#9662;</span>`;
+    const dd = document.createElement('div'); dd.className = 'font-picker-dropdown';
+    const search = document.createElement('input'); search.className = 'font-picker-search'; search.placeholder = 'Search...'; dd.appendChild(search);
+    fonts.forEach(f => {
+      const opt = document.createElement('div'); opt.className = 'font-picker-option' + (f === cur ? ' active' : '');
+      opt.innerHTML = `<span class="font-picker-preview" style="font-family:'${f}',${fb}">Aa Brightbase Design</span><span class="font-picker-name">${f}</span>`;
+      opt.addEventListener('click', () => { document.documentElement.style.setProperty(vn, `'${f}',${fb}`); btn.querySelector('span').textContent = f; btn.style.fontFamily = `'${f}',${fb}`; dd.querySelectorAll('.font-picker-option').forEach(o => o.classList.remove('active')); opt.classList.add('active'); dd.classList.remove('open'); });
+      dd.appendChild(opt);
+    });
+    search.addEventListener('input', () => { const q = search.value.toLowerCase(); dd.querySelectorAll('.font-picker-option').forEach(o => o.style.display = o.querySelector('.font-picker-name').textContent.toLowerCase().includes(q) ? '' : 'none'); });
+    btn.addEventListener('click', e => { e.stopPropagation(); document.querySelectorAll('.font-picker-dropdown.open').forEach(d => d.classList.remove('open')); dd.classList.toggle('open'); search.value = ''; search.focus(); });
+    wrap.appendChild(btn); wrap.appendChild(dd);
+  });
+  document.addEventListener('click', () => document.querySelectorAll('.font-picker-dropdown.open').forEach(d => d.classList.remove('open')));
+}
+
+// --- Icons (outline + solid) ---
+const ICON_MAP = {
+  home:    {tabler:'ti ti-home','tabler-filled':'ti ti-home-filled',lucide:'home',phosphor:'ph ph-house','phosphor-fill':'ph-fill ph-house',feather:'home',material:'home','material-fill':'home'},
+  bolt:    {tabler:'ti ti-bolt','tabler-filled':'ti ti-bolt-filled',lucide:'zap',phosphor:'ph ph-lightning','phosphor-fill':'ph-fill ph-lightning',feather:'zap',material:'bolt','material-fill':'bolt'},
+  rocket:  {tabler:'ti ti-rocket','tabler-filled':'ti ti-rocket-filled',lucide:'rocket',phosphor:'ph ph-rocket-launch','phosphor-fill':'ph-fill ph-rocket-launch',feather:'send',material:'rocket_launch','material-fill':'rocket_launch'},
+  palette: {tabler:'ti ti-palette','tabler-filled':'ti ti-palette-filled',lucide:'palette',phosphor:'ph ph-palette','phosphor-fill':'ph-fill ph-palette',feather:'droplet',material:'palette','material-fill':'palette'},
+  code:    {tabler:'ti ti-code','tabler-filled':'ti ti-code',lucide:'code',phosphor:'ph ph-code','phosphor-fill':'ph-fill ph-code',feather:'code',material:'code','material-fill':'code'},
+  star:    {tabler:'ti ti-star','tabler-filled':'ti ti-star-filled',lucide:'star',phosphor:'ph ph-star','phosphor-fill':'ph-fill ph-star',feather:'star',material:'star','material-fill':'star'},
+  sparkles:{tabler:'ti ti-sparkles','tabler-filled':'ti ti-sparkles-filled',lucide:'sparkles',phosphor:'ph ph-sparkle','phosphor-fill':'ph-fill ph-sparkle',feather:'star',material:'auto_awesome','material-fill':'auto_awesome'},
+  user:    {tabler:'ti ti-user','tabler-filled':'ti ti-user-filled',lucide:'user',phosphor:'ph ph-user','phosphor-fill':'ph-fill ph-user',feather:'user',material:'person','material-fill':'person'},
+};
+const ICON_SAMPLES = ['home','bolt','rocket','palette','code','star'];
+
+function iconHTML(semantic, lib) {
+  lib = lib || currentIconLib; const m = ICON_MAP[semantic]; if (!m) return '';
+  const base = lib.replace('-filled','').replace('-fill','');
+  if (base === 'tabler' || base === 'tabler') return `<i class="${m[lib]||m.tabler}" style="font-size:var(--icon-size);color:var(--icon-color);"></i>`;
+  if (base === 'lucide') return `<i data-lucide="${m.lucide}" style="width:var(--icon-size);height:var(--icon-size);color:var(--icon-color);"></i>`;
+  if (base === 'phosphor') return `<i class="${m[lib]||m.phosphor}" style="font-size:var(--icon-size);color:var(--icon-color);"></i>`;
+  if (base === 'feather') return `<i data-feather="${m.feather}" style="width:var(--icon-size);height:var(--icon-size);color:var(--icon-color);"></i>`;
+  if (base === 'material') return `<span class="material-symbols-outlined" style="font-size:var(--icon-size);color:var(--icon-color);${lib.includes('fill')?'font-variation-settings:"FILL" 1;':''}">${m.material}</span>`;
+  return '';
+}
+
+function renderIconPreview() {
+  document.getElementById('iconPreview').innerHTML = ICON_SAMPLES.map(s => `<div class="icon-preview-item">${iconHTML(s)}</div>`).join('');
+  initIcons();
+}
+
+function initIcons() {
+  if (currentIconLib === 'lucide' && typeof lucide !== 'undefined') try { lucide.createIcons(); } catch {}
+  if (currentIconLib === 'feather' && typeof feather !== 'undefined') try { feather.replace(); } catch {}
+  if (currentIconLib.startsWith('material') && !document.querySelector('link[href*="Material+Symbols"]')) {
+    const l = document.createElement('link'); l.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block'; l.rel = 'stylesheet'; document.head.appendChild(l);
+  }
+}
+
+function updateAllIcons() {
+  document.querySelectorAll('[data-icon]').forEach(el => {
+    const sem = el.dataset.icon;
+    const txt = el.textContent.trim();
+    const labelMatch = txt.match(/[A-Z][A-Z\s]+$/);
+    const label = labelMatch ? ' ' + labelMatch[0].trim() : '';
+    el.innerHTML = iconHTML(sem) + label;
+  });
+  initIcons();
+}
+
+document.getElementById('iconLibrarySelect').addEventListener('change', function() { currentIconLib = this.value; renderIconPreview(); updateAllIcons(); });
+
+// --- Gradients ---
+function generateGradients() {
+  const grid = document.getElementById('gradGrid'); if (!grid) return; grid.innerHTML = '';
+  const f = getFoundation();
+  const hueShift = [0,0,15,40][gradMood], lightShift = [0,5,12,25][gradMood];
+  const srcs = Object.entries(f).map(([name, hex]) => { try { const [h,s,l] = chroma(hex).hsl(); return {name,h:h||0,s:s||0,l:l||0,hex}; } catch { return {name,h:0,s:0,l:0.5,hex}; } });
+  const autoG = [];
+  srcs.forEach(c => {
+    let stops = [c.hex];
+    for (let i = 1; i < gradStops; i++) { const t = i/(gradStops-1); try { stops.push(chroma(c.hex).set('hsl.h',`+${hueShift*t}`).set('hsl.l', c.l > 0.5 ? c.l-lightShift*t/100 : c.l+lightShift*t/100).hex()); } catch { stops.push(c.hex); } }
+    autoG.push({stops, angle: gradAngle, label: c.name, auto: true});
+  });
+  const pairs = []; for (let a=0;a<srcs.length;a++) for (let b=a+1;b<Math.min(srcs.length,a+3);b++) pairs.push([a,b]);
+  pairs.slice(0,4).forEach(([a,b]) => {
+    let stops = [];
+    for (let i=0;i<gradStops;i++) { const t = gradStops===1?0:i/(gradStops-1); try { stops.push(chroma.mix(srcs[a].hex,srcs[b].hex,t,'lab').hex()); } catch { stops.push(srcs[a].hex); } }
+    autoG.push({stops, angle: gradAngle, label: `${srcs[a].name} → ${srcs[b].name}`, auto: true});
+  });
+  [...autoG, ...customGradients].forEach((g, idx) => {
+    const css = `linear-gradient(${g.angle}deg, ${g.stops.join(', ')})`;
+    const card = document.createElement('div'); card.className = 'grad-card';
+    card.innerHTML = `<div class="grad-swatch" style="background:${css}"></div><div class="grad-info"><div class="grad-css">${g.label||'Custom'}</div><button class="copy-btn" onclick="event.stopPropagation();navigator.clipboard.writeText(\`${css}\`);this.textContent='OK';setTimeout(()=>this.textContent='Copy',1000)">Copy</button></div>`;
+    grid.appendChild(card);
+  });
+}
+
+document.getElementById('gradMoodSlider').addEventListener('input', function() { gradMood = +this.value; document.getElementById('gradMoodVal').textContent = ['','Subtle','Medium','Dramatic'][gradMood]; generateGradients(); });
+document.getElementById('gradStopsSlider').addEventListener('input', function() { gradStops = +this.value; document.getElementById('gradStopsVal').textContent = this.value; generateGradients(); });
+document.getElementById('gradDirBtns').addEventListener('click', function(e) { const b = e.target.closest('[data-angle]'); if (!b) return; gradAngle = +b.dataset.angle; this.querySelectorAll('button').forEach(x => { x.style.background=''; x.style.color=''; }); b.style.background='#1A1D21'; b.style.color='#fff'; generateGradients(); });
+
+// --- Versions ---
+function getVersions() { try { return JSON.parse(localStorage.getItem('bb-ds-v4')||'{"versions":[]}'); } catch { return {versions:[]}; } }
+function saveVersions(d) { localStorage.setItem('bb-ds-v4', JSON.stringify(d)); }
+function captureTokens() {
+  const t = {}, cs = getComputedStyle(document.documentElement);
+  ['--font-heading','--font-body','--font-mono','--heading-weight','--heading-tracking','--max-width','--container-padding','--section-padding','--radius-card','--radius-button','--card-padding','--card-shadow','--gap-component','--size-hero','--size-section','--size-feature','--size-body','--size-label','--size-button','--font-scale','--spacing-scale','--icon-size'].forEach(k => t[k] = document.documentElement.style.getPropertyValue(k)||cs.getPropertyValue(k).trim());
+  return {tokens:t,foundationColors:JSON.parse(JSON.stringify(foundationColors)),semanticMap:JSON.parse(JSON.stringify(semanticMap))};
+}
+function applyVersion(v) {
+  if (v.foundationColors) foundationColors = JSON.parse(JSON.stringify(v.foundationColors));
+  if (v.semanticMap) semanticMap = JSON.parse(JSON.stringify(v.semanticMap));
+  renderFoundationEditor(); regenerateAll();
+  if (v.tokens) Object.entries(v.tokens).forEach(([k,val]) => document.documentElement.style.setProperty(k,val));
+  document.querySelectorAll('#sidebar input[type="range"]').forEach(s => {
+    const vn = s.dataset.var; if (!vn||vn==='hierarchy') return;
+    const val = v.tokens?.[vn]; if (val===undefined) return;
+    const num = parseFloat(val);
+    if (s.dataset.divisor) s.value = Math.round(num*parseFloat(s.dataset.divisor)); else s.value = Math.round(num);
+    const ve = s.parentElement.querySelector('.cp-val');
+    if (ve) { if (s.dataset.divisor) ve.textContent=num.toFixed(1)+'x'; else if (vn==='--radius-button'&&num>=200) ve.textContent='full'; else ve.textContent=Math.round(num); }
+  });
+}
+function renderVersions() {
+  const d = getVersions(), list = document.getElementById('versionList'); list.innerHTML = '';
+  d.versions.forEach((v,i) => { const it = document.createElement('div'); it.className='version-item'; it.innerHTML=`<span class="version-name" data-idx="${i}">${v.name}</span><span class="version-time">${new Date(v.ts).toLocaleDateString()}</span><button class="version-del" data-idx="${i}">&times;</button>`; list.appendChild(it); });
+  list.querySelectorAll('.version-name').forEach(el => el.addEventListener('click', () => applyVersion(getVersions().versions[+el.dataset.idx])));
+  list.querySelectorAll('.version-del').forEach(el => el.addEventListener('click', () => { const d=getVersions(); d.versions.splice(+el.dataset.idx,1); saveVersions(d); renderVersions(); }));
+}
+document.getElementById('saveVersionBtn').addEventListener('click', () => { const n=prompt('Name:',`v${getVersions().versions.length+1}`); if (!n) return; const d=getVersions(); d.versions.push({name:n,ts:new Date().toISOString(),...captureTokens()}); saveVersions(d); renderVersions(); });
+document.getElementById('exportVersionsBtn').addEventListener('click', () => { const b=new Blob([JSON.stringify(getVersions(),null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='brightbase-versions.json'; a.click(); });
+document.getElementById('importVersionsBtn').addEventListener('click', () => document.getElementById('importFile').click());
+document.getElementById('importFile').addEventListener('change', e => { const f=e.target.files[0]; if (!f) return; const r=new FileReader(); r.onload=ev=>{ try { const d=JSON.parse(ev.target.result); if (d.versions){saveVersions(d);renderVersions();} } catch{} }; r.readAsText(f); });
+document.getElementById('resetBtn').addEventListener('click', () => {
+  foundationColors=JSON.parse(JSON.stringify(FOUNDATION_DEFAULTS)); semanticMap=JSON.parse(JSON.stringify(SEMANTIC_DEFAULTS)); customGradients=[];
+  document.documentElement.style.cssText=''; renderFoundationEditor(); regenerateAll();
+  document.querySelectorAll('#sidebar input[type="range"]').forEach(s => { const d=s.getAttribute('value'); if(d)s.value=d; const v=s.parentElement.querySelector('.cp-val'); if(v){if(s.dataset.divisor)v.textContent=(d/parseFloat(s.dataset.divisor)).toFixed(1)+'x';else if(s.dataset.var==='--radius-button')v.textContent='full';else v.textContent=d;} });
+});
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const cs=getComputedStyle(document.documentElement);
+  const vars=['--bg-primary','--bg-surface','--bg-card','--text-primary','--text-secondary','--border','--border-faint','--footer-bg','--footer-text','--font-heading','--font-body','--font-mono','--heading-weight','--heading-tracking','--max-width','--container-padding','--section-padding','--radius-card','--radius-button','--card-padding','--card-shadow','--gap-component','--size-hero','--size-section','--size-feature','--size-body','--size-label','--size-button','--font-scale','--spacing-scale','--icon-size'];
+  let css=':root {\n'; vars.forEach(v=>css+=`  ${v}: ${document.documentElement.style.getPropertyValue(v)||cs.getPropertyValue(v).trim()};\n`); css+='}';
+  navigator.clipboard.writeText(css).then(()=>{const b=document.getElementById('exportBtn');b.textContent='Copied!';setTimeout(()=>b.textContent='Export CSS',1500);});
+});
+document.querySelectorAll('.copy-btn[data-target]').forEach(btn => {
+  btn.addEventListener('click', () => { const t=document.getElementById(btn.dataset.target); if(!t)return; navigator.clipboard.writeText(t.innerHTML.trim()).then(()=>{btn.textContent='OK';setTimeout(()=>btn.textContent='Copy',1200);}); });
+});
+
+// --- Init ---
+setupInputs(); buildFontPickers(); renderFoundationEditor(); regenerateAll(); renderIconPreview(); renderVersions();
+</script>
+</body>
+</html>

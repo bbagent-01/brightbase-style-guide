@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "style-guide",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "8765", "/Users/lorenpolster/Library/CloudStorage/Dropbox/Claude/Projects/brightbase-style-guide"],
+      "port": 8765
+    }
+  ]
+}
